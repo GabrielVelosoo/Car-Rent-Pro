@@ -545,8 +545,8 @@ The API offers several endpoints for managing vehicle rentals. Below are details
      
 3. **Retrieve a Single Car Model**<br>
    • **Method:** `GET`<br>
-   • **URL:** `/api/brand/{id}`<br>
-   • **Parameters:** Brand ID<br>
+   • **URL:** `/api/car-model/{id}`<br>
+   • **Parameters:** Car Model ID<br>
    • **Success Response:**<br>
      **Status: 200**
    
@@ -675,7 +675,595 @@ The API offers several endpoints for managing vehicle rentals. Below are details
      }
      ```
      
-   • **Response Vacation Plan Not Found:**<br>
+   • **Response Car Model Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to delete. The requested resource does not exist."
+     }
+     ```
+
+##### Cars endpoints: 
+
+1. **Create a New Car**<br>
+   • **Method:** `POST`<br>
+   • **URL:** `/api/car`<br>
+   • **Request Body:**<br>
+   
+     ```
+     {
+         "car_model_id": "<car-model-id>",
+         "car_plate": "<car-plate>",
+         "available": "<available(boolean(0, 1))>",
+         "km": "<km(int)>"
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 201**
+   
+     ```
+     {
+        "car_model_id": "<car-model-id>",
+        "car_plate": "<car-plate>",
+        "available": "<available>",
+        "km": "<km>",
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "id": <car-id>
+     }
+     ```
+     
+2. **Retrieve All Cars**<br>
+   • **Method:** `GET`<br>
+   • **URL:** `/api/car`<br>
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     [
+        {
+            "id": <car-id>,
+            "car_model_id": <car-model-id>,
+            "car_plate": "<car-plate>",
+            "available": <available>,
+            "km": <km>,
+            "created_at": "0000-00-00T00:00:00.000000Z",
+            "updated_at": "0000-00-00T00:00:00.000000Z",
+            "car_model": {
+                "id": <car-model-id>,
+                "brand_id": <brand-id>,
+                "name": "<car-model-name>",
+                "image": "<car-model-image(.png,.jpeg,.jpg)>",
+                "number_ports": <number-ports>,
+                "places": <places>,
+                "air_bag": <air-bag>,
+                "abs": <abs>,
+                "created_at": "0000-00-00T00:00:00.000000Z",
+                "updated_at": "0000-00-00T00:00:00.000000Z"
+           }
+        }
+     ]
+     ```
+     
+3. **Retrieve a Single Car**<br>
+   • **Method:** `GET`<br>
+   • **URL:** `/api/car/{id}`<br>
+   • **Parameters:** Car ID<br>
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+         "id": <car-id>,
+         "car_model_id": <car-model-id>,
+         "car_plate": "<car-plate>",
+         "available": <available>,
+         "km": <km>,
+         "created_at": "0000-00-00T00:00:00.000000Z",
+         "updated_at": "0000-00-00T00:00:00.000000Z",
+         "car_model": {
+             "id": <car-model-id>,
+             "brand_id": <brand-id>,
+             "name": "<car-model-name>",
+             "image": "<car-model-image(.png,.jpeg,.jpg)>",
+             "number_ports": <number-ports>,
+             "places": <places>,
+             "air_bag": <air-bag>,
+             "abs": <abs>,
+             "created_at": "0000-00-00T00:00:00.000000Z",
+             "updated_at": "0000-00-00T00:00:00.000000Z"
+           }
+     }
+     ```
+     
+   • **Response Car Not Found:**<br>
+     **Status: 404**
+     ```
+     {
+        "message": "The requested resource does not exist."
+     }
+     ```
+     
+4. **Update a Car**<br>
+   • **Method:** `PUT`<br>
+   • **URL:** `/api/car/{id}`<br>
+   • **Parameters:** Car ID<br>
+   • **Request Body:**
+   
+     ```
+     {
+         "car_model_id": "<update-car-model-id>",
+         "car_plate": "<update-car-plate>",
+         "available": "<update-available(boolean(0, 1))>",
+         "km": "<update-km(int)>"
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+        "id": <car-id>,
+        "car_model_id": "<update-car-model-id>",
+        "car_plate": "<update-car-plate>",
+        "available": "<update-available>",
+        "km": "<update-km>",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z"
+     }
+     ```
+     
+   • **Response Brand Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to update. The requested resource does not exist."
+     }
+     ```
+
+5. **Partially Update a Car**<br>
+   • **Method:** `PATCH`<br>
+   • **URL:** `/api/car/{id}`<br>
+   • **Parameters:** Car ID<br>
+   • **Request Body:**
+   
+     ```
+     {
+        "car_plate": "<update-car-plate>"
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+        "id": <car-id>,
+        "car_model_id": "<car-model-id>",
+        "car_plate": "<update-car-plate>",
+        "available": "<available>",
+        "km": "<km>",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z"
+     }
+     ```
+     
+   • **Response Brand Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to update. The requested resource does not exist."
+     }
+     ```
+     
+6. **Delete a Car**<br>
+   • **Method:** `DELETE`<br>
+   • **URL:** `/api/car/{id}`<br>
+   • **Parameters:** Car Model ID<br>
+   • **Success Response:**<br>
+     **Status: 200**
+    
+     ```
+     {
+        "message": "Car deleted."
+     }
+     ```
+     
+   • **Response Car Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to delete. The requested resource does not exist."
+     }
+     ```
+
+##### Clients endpoints: 
+
+1. **Create a New Client**<br>
+   • **Method:** `POST`<br>
+   • **URL:** `/api/client`<br>
+   • **Request Body:**<br>
+   
+     ```
+     {
+         "name": "<client-name>"=
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 201**
+   
+     ```
+     {
+        "name": "<client-name>",
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "id": <client-id>
+     }
+     ```
+     
+2. **Retrieve All Clients**<br>
+   • **Method:** `GET`<br>
+   • **URL:** `/api/client`<br>
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     [
+        {
+            "id": <client-id>,
+            "name": "<client-name>",
+            "created_at": "0000-00-00T00:00:00.000000Z",
+            "updated_at": "0000-00-00T00:00:00.000000Z"
+        }
+     ]
+     ```
+     
+3. **Retrieve a Single Client**<br>
+   • **Method:** `GET`<br>
+   • **URL:** `/api/client/{id}`<br>
+   • **Parameters:** Client ID<br>
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+         "id": <client-id>,
+         "name": "<client-name>",
+         "created_at": "0000-00-00T00:00:00.000000Z",
+         "updated_at": "0000-00-00T00:00:00.000000Z"
+     }
+     ```
+     
+   • **Response Client Not Found:**<br>
+     **Status: 404**
+     ```
+     {
+        "message": "The requested resource does not exist."
+     }
+     ```
+     
+4. **Update a Client**<br>
+   • **Method:** `PUT`<br>
+   • **URL:** `/api/client/{id}`<br>
+   • **Parameters:** Client ID<br>
+   • **Request Body:**
+   
+     ```
+     {
+         "name": "<update-client-name>"
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+        "id": <client-id>,
+        "name": "<update-client-name>",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z"
+     }
+     ```
+     
+   • **Response Cllient Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to update. The requested resource does not exist."
+     }
+     ```
+
+5. **Partially Update a Client**<br>
+   • **Method:** `PATCH`<br>
+   • **URL:** `/api/client/{id}`<br>
+   • **Parameters:** Client ID<br>
+   • **Request Body:**
+   
+     ```
+     {
+        "name": "<update-client-name>"
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+        "id": <client-id>,
+        "name": "<update-client-name>",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z"
+     }
+     ```
+     
+   • **Response Client Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to update. The requested resource does not exist."
+     }
+     ```
+     
+6. **Delete a Client**<br>
+   • **Method:** `DELETE`<br>
+   • **URL:** `/api/client/{id}`<br>
+   • **Parameters:** Client ID<br>
+   • **Success Response:**<br>
+     **Status: 200**
+    
+     ```
+     {
+        "message": "Client deleted."
+     }
+     ```
+     
+   • **Response Client Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to delete. The requested resource does not exist."
+     }
+     ```
+
+##### Rentals endpoints: 
+
+1. **Create a New Rental**<br>
+   • **Method:** `POST`<br>
+   • **URL:** `/api/rental`<br>
+   • **Request Body:**<br>
+   
+     ```
+     {
+         "client_id": <client-id>,
+         "car_id": <car-id>,
+         "start_date_period": "<start-date-period(date)>",
+         "expected_end_date_period": "<expected-end-date-period(date)>",
+         "actual_end_date_period": "<actual-end-date-period(date)>",
+         "daily_rate": <daily-rate(numeric)>,
+         "initial_km": <initial-km(int)>,
+         "final_km": <initial-km(int)>
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 201**
+   
+     ```
+     {
+        "client_id": <client-id>,
+        "car_id": <car-id>,
+        "start_date_period": "<start-date-period>",
+        "expected_end_date_period": "<expected-end-date-period>",
+        "actual_end_date_period": "<actual-end-date-period>",
+        "daily_rate": <daily-rate>,
+        "initial_km": <initial-km>,
+        "final_km": <final-km>,
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "id": <rental-id>
+     }
+     ```
+     
+2. **Retrieve All Rentals**<br>
+   • **Method:** `GET`<br>
+   • **URL:** `/api/rental`<br>
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     [
+        {
+            "id": <rental-id>,
+            "client_id": <client-id>,
+            "car_id": <car-id>,
+            "start_date_period": "<start-date-period>",
+            "expected_end_date_period": "<expected-end-date-period>",
+            "actual_end_date_period": "<actual-end-date-period>",
+            "daily_rate": <daily-rate>,
+            "initial_km": <initial-km>,
+            "final_km": <final-km>,
+            "created_at": "0000-00-00T00:00:00.000000Z",
+            "updated_at": "0000-00-00T00:00:00.000000Z",
+            "client": {
+                "id": <client-id>,
+                "name": "<client-name>",
+                "created_at": "0000-00-00T00:00:00.000000Z",
+                "updated_at": "0000-00-00T00:00:00.000000Z"
+            },
+            "car": {
+                "id": <car-id>,
+                "car_model_id": <car-model-id>,
+                "car_plate": "<car-plate>",
+                "available": <available>,
+                "km": <km>,
+                "created_at": "0000-00-00T00:00:00.000000Z",
+                "updated_at": "0000-00-00T00:00:00.000000Z"
+            }
+        }
+     ]
+     ```
+     
+3. **Retrieve a Single Rental**<br>
+   • **Method:** `GET`<br>
+   • **URL:** `/api/rental/{id}`<br>
+   • **Parameters:** Rental ID<br>
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+         "id": <rental-id>,
+         "client_id": <client-id>,
+         "car_id": <car-id>,
+         "start_date_period": "<start-date-period>",
+         "expected_end_date_period": "<expected-end-date-period>",
+         "actual_end_date_period": "<actual-end-date-period>",
+         "daily_rate": <daily-rate>,
+         "initial_km": <initial-km>,
+         "final_km": <final-km>,
+         "created_at": "0000-00-00T00:00:00.000000Z",
+         "updated_at": "0000-00-00T00:00:00.000000Z",
+         "client": {
+             "id": <client-id>,
+             "name": "<client-name>",
+             "created_at": "0000-00-00T00:00:00.000000Z",
+             "updated_at": "0000-00-00T00:00:00.000000Z"
+         },
+         "car": {
+             "id": <car-id>,
+             "car_model_id": <car-model-id>,
+             "car_plate": "<car-plate>",
+             "available": <available>,
+             "km": <km>,
+             "created_at": "0000-00-00T00:00:00.000000Z",
+             "updated_at": "0000-00-00T00:00:00.000000Z"
+         }
+     }
+     ```
+     
+   • **Response Rental Not Found:**<br>
+     **Status: 404**
+     ```
+     {
+        "message": "The requested resource does not exist."
+     }
+     ```
+     
+4. **Update a Rental**<br>
+   • **Method:** `PUT`<br>
+   • **URL:** `/api/rental/{id}`<br>
+   • **Parameters:** Rental ID<br>
+   • **Request Body:**
+   
+     ```
+     {
+         "client_id": <update-client-id>,
+         "car_id": <update-car-id>,
+         "start_date_period": "<update-start-date-period(date)>",
+         "expected_end_date_period": "<update-expected-end-date-period(date)>",
+         "actual_end_date_period": "<update-actual-end-date-period(date)>",
+         "daily_rate": <update-daily-rate(numeric)>,
+         "initial_km": <update-initial-km(int)>,
+         "final_km": <update-initial-km(int)>
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+         "id": <rental-id>,
+         "client_id": <update-client-id>,
+         "car_id": <update-car-id>,
+         "start_date_period": "<update-start-date-period>",
+         "expected_end_date_period": "<update-expected-end-date-period>",
+         "actual_end_date_period": "<update-actual-end-date-period>",
+         "daily_rate": <update-daily-rate>,
+         "initial_km": <update-initial-km>,
+         "final_km": <update-final-km>,
+         "created_at": "0000-00-00T00:00:00.000000Z",
+         "updated_at": "0000-00-00T00:00:00.000000Z",
+     }
+     ```
+     
+   • **Response Rental Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to update. The requested resource does not exist."
+     }
+     ```
+
+5. **Partially Update a Rental**<br>
+   • **Method:** `PATCH`<br>
+   • **URL:** `/api/rental/{id}`<br>
+   • **Parameters:** Rental ID<br>
+   • **Request Body:**
+   
+     ```
+     {
+         "start_date_period": "<update-start-date-period>",
+         "expected_end_date_period": "<update-expected-end-date-period>",
+         "actual_end_date_period": "<update-actual-end-date-period>"
+     }
+     ```
+     
+   • **Success Response:**<br>
+     **Status: 200**
+   
+     ```
+     {
+         "id": <rental-id>,
+         "client_id": <client-id>,
+         "car_id": <car-id>,
+         "start_date_period": "<update-start-date-period>",
+         "expected_end_date_period": "<update-expected-end-date-period>",
+         "actual_end_date_period": "<update-actual-end-date-period>",
+         "daily_rate": <daily-rate>,
+         "initial_km": <initial-km>,
+         "final_km": <final-km>,
+         "created_at": "0000-00-00T00:00:00.000000Z",
+         "updated_at": "0000-00-00T00:00:00.000000Z",
+     }
+     ```
+     
+   • **Response Rental Not Found:**<br>
+     **Status: 404**
+   
+     ```
+     {
+        "message": "Unable to update. The requested resource does not exist."
+     }
+     ```
+     
+6. **Delete a Rental**<br>
+   • **Method:** `DELETE`<br>
+   • **URL:** `/api/rental/{id}`<br>
+   • **Parameters:** Rental ID<br>
+   • **Success Response:**<br>
+     **Status: 200**
+    
+     ```
+     {
+        "message": "Rental deleted."
+     }
+     ```
+     
+   • **Response Rental Not Found:**<br>
      **Status: 404**
    
      ```
