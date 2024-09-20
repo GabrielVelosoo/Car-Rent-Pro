@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
+      - .:/var/www/html
       - .:/var/www/html/public
       - .:/var/www/html/storage
     ports:
