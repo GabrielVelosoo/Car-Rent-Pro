@@ -27,6 +27,7 @@ class CarRequest extends FormRequest
             ],
             'car_plate' => [
                 'required',
+                'min:8',
                 'max:8'
             ],
             'available' => [

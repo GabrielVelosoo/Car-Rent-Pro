@@ -29,22 +29,28 @@ class RentalRequest extends FormRequest
                 'exists:cars,id'
             ],
             'start_date_period' => [
-                'required'
+                'required',
+                'date'
             ],
             'expected_end_date_period' => [
-                'required'
+                'required',
+                'date'
             ],
             'actual_end_date_period' => [
-                'required'
+                'required',
+                'date'
             ],
             'daily_rate' => [
-                'required'
+                'required',
+                'numeric'
             ],
             'initial_km' => [
-                'required'
+                'required',
+                'integer'
             ],
             'final_km' => [
-                'required'
+                'required',
+                'integer'
             ]
         ];
 
