@@ -33,8 +33,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copying the source code to the working directory
 COPY . /var/www/html
 
-COPY init.ps1 /usr/local/bin/init.ps1
-
 RUN rm -rf /var/www/html/vendor
 
 RUN chown -R www-data:www-data /var/www/html
