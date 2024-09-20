@@ -76,7 +76,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    
    ```
    CONTAINER ID     IMAGE                   COMMAND                  CREATED          STATUS          PORTS                   NAMES
-   <container-id>   CarRentPro-API-app      "docker-php-entrypoi…"   30 minutes ago   Up 30 minutes   0.0.0.0:8000->80/tcp    <container-name>
+   <container-id>   carrentpro-api-app      "docker-php-entrypoi…"   30 minutes ago   Up 30 minutes   0.0.0.0:8000->80/tcp    <container-name>
    <container-id>   mysql:8.0.39            "docker-entrypoint.s…"   30 minutes ago   Up 30 minutes   0.0.0.0:3306->3306/tcp  <container-name>
    ```
 
@@ -190,7 +190,7 @@ Authorization: Bearer {your-token}
      }
      ```
      
-     NOTE: Use the email `test@example.com` and password `12345` created when running the `php artisan db:seed` command. If you prefer, you can change the email and password by editing       `database/seeders/DatabaseSeeder.php` in the project root, updating the data as desired, and running the seeders command again. You can also add more users by updating the data in       `DatabaseSeeder.php` and running `php artisan db:seed` again, or by accessing the MySQL container.<br><br>
+     NOTE: Use the email `test@example.com` and password `12345` created when running the `php artisan db:seed` command. If you prefer, you can change the email and password by editing      `database/seeders/DatabaseSeeder.php` in the project root, updating the data as desired, and running the seeders command again. You can also add more users by updating the data         in `DatabaseSeeder.php` and running `php artisan db:seed` again, or by accessing the MySQL container.<br><br>
 
      **Accessing MySQL Container**
 
@@ -245,7 +245,7 @@ Authorization: Bearer {your-token}
 
      After that, you have created the database, now just run the migrations with `php artisan migrate`.<br><br>
  
-3. **Retrieve Logged-In User**<br>
+2. **Retrieve Logged-In User**<br>
    • **Method:** `GET`<br>
    • **URL:** `/api/me`<br>
    • **Success Response:**<br>
@@ -264,7 +264,7 @@ Authorization: Bearer {your-token}
      }
      ```
      
-4. **Logout**<br>
+3. **Logout**<br>
    • **Method:** `POST`<br>
    • **URL:** `/api/logout`<br>
    • **Success Response:**<br>
@@ -276,7 +276,7 @@ Authorization: Bearer {your-token}
      }
      ```
 
-5. **Refresh JWT**<br>
+4. **Refresh JWT**<br>
    • **Method:** `POST`<br>
    • **URL:** `/api/refresh`<br>
    • **Success Response:**<br>
@@ -324,8 +324,8 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      Key      Type       Value
-     name     (text)     bmw
-     image    (file)     (image PNG file)
+     name     (text)     <brand-name>
+     image    (file)     <brand-image(.png)>
      ```
      **NOTE**: The request body must be sent in form-data format. The image field must contain an image file in PNG format (.png).<br>
      
@@ -334,11 +334,11 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      {
-        "name": "BMW",
-        "image": "images/zKrYZOb0ch7JYsttuSclvBRuk1mEj8TnbEls3sUb.png",
+        "name": "<brand-name>",
+        "image": "<brand-image>",
         "updated_at": "0000-00-00T00:00:00.000000Z",
         "created_at": "0000-00-00T00:00:00.000000Z",
-        "id": 1
+        "id": <brand-id>
      }
      ```
      
@@ -351,12 +351,14 @@ The API offers several endpoints for managing vehicle rentals. Below are details
      ```
      [
         {
-            "id": 1,
-            "name": "BMW",
-            "image": "images/zKrYZOb0ch7JYsttuSclvBRuk1mEj8TnbEls3sUb.png",
+            "id": <brand-id>,
+            "name": "<brand-name>",
+            "image": "<brand-image>",
             "created_at": "0000-00-00T00:00:00.000000Z",
             "updated_at": "0000-00-00T00:00:00.000000Z",
-            "car_models": []
+            "car_models": [
+                 Brand related models
+            ]
         }
      ]
      ```
@@ -370,12 +372,14 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      {
-        "id": 1,
-        "name": "BMW",
-        "image": "images/zKrYZOb0ch7JYsttuSclvBRuk1mEj8TnbEls3sUb.png",
+        "id": <brand-id>,
+        "name": "<brand-name>",
+        "image": "<brand-image>",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z",
-        "car_models": []
+        "car_models": [
+             Brand related models
+        ]
      }
      ```
      
@@ -395,8 +399,8 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      Key      Type       Value
-     name     (text)     chevrolet
-     image    (file)     (update image PNG file)
+     name     (text)     <update-brand-name>
+     image    (file)     <update-brand-image(.png)>
      ```
      
    • **Success Response:**<br>
@@ -404,9 +408,9 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      {
-        "id": 1,
-        "name": "CHEVROLET",
-        "image": "images/UsPXF3n5PnP4S5tjwiZWy77vJSwuln5a4HQeKGTv.png",
+        "id": <brand-id>,
+        "name": "<update-brand-name>",
+        "image": "<update-brand-image>",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z"
      }
@@ -429,7 +433,7 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      Key      Type       Value
-     name     (text)     ford
+     name     (text)     <update-brand-name>
      ```
      
    • **Success Response:**<br>
@@ -437,9 +441,9 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      {
-        "id": 1,
-        "name": "FORD",
-        "image": "images/UsPXF3n5PnP4S5tjwiZWy77vJSwuln5a4HQeKGTv.png",
+        "id": <brand-id>,
+        "name": "<update-brand-name>",
+        "image": "<brand-image>",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z"
      }
@@ -502,11 +506,11 @@ The API offers several endpoints for managing vehicle rentals. Below are details
      {
         "brand_id": "<brand-id>",
         "name": "<car-model-name>",
-        "image": "<car-model-image(.png,.jpeg,.jpg)>",
-        "number_ports": "<number-ports(int)>",
-        "places": "<places(int)>",
-        "air_bag": "<air-bag(boolean(0, 1))>",
-        "abs": "<abs(boolean(0, 1))>",
+        "image": "<car-model-image>",
+        "number_ports": "<number-ports>",
+        "places": "<places>",
+        "air_bag": "<air-bag>",
+        "abs": "<abs>",
         "updated_at": "0000-00-00T00:00:00.000000Z",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "id": <car-model-id>
@@ -525,17 +529,17 @@ The API offers several endpoints for managing vehicle rentals. Below are details
             "id": <car-model-id>,
             "brand_id": <brand-id>,
             "name": "car-model-name",
-            "image": "<car-model-image(png,jpeg,jpg)>",
-            "number_ports": <number-ports(int)>,
-            "places": <places(int)>,
-            "air_bag": <air-bag(boolean(0, 1))>,
-            "abs": <abs(boolean(0, 1))>,
+            "image": "<car-model-image>",
+            "number_ports": <number-ports>,
+            "places": <places>,
+            "air_bag": <air-bag>,
+            "abs": <abs>,
             "created_at": "0000-00-00T00:00:00.000000Z",
             "updated_at": "0000-00-00T00:00:00.000000Z",
             "brand": {
                 "id": <brand-id>,
-                "name": "<BRAND-NAME>",
-                "image": "<brand-image(.png)>",
+                "name": "<brand-name>",
+                "image": "<brand-image>",
                 "created_at": "0000-00-00T00:00:00.000000Z",
                 "updated_at": "0000-00-00T00:00:00.000000Z"
            }
@@ -555,17 +559,17 @@ The API offers several endpoints for managing vehicle rentals. Below are details
          "id": <car-model-id>,
          "brand_id": <brand-id>,
          "name": "car-model-name",
-         "image": "<car-model-image(png,jpeg,jpg)>",
-         "number_ports": <number-ports(int)>,
-         "places": <places(int)>,
-         "air_bag": <air-bag(boolean(0, 1))>,
-         "abs": <abs(boolean(0, 1))>,
+         "image": "<car-model-image>",
+         "number_ports": <number-ports>,
+         "places": <places>,
+         "air_bag": <air-bag>,
+         "abs": <abs>,
          "created_at": "0000-00-00T00:00:00.000000Z",
          "updated_at": "0000-00-00T00:00:00.000000Z",
          "brand": {
              "id": <brand-id>,
-             "name": "<BRAND-NAME>",
-             "image": "<brand-image(.png)>",
+             "name": "<brand-name>",
+             "image": "<brand-image>",
              "created_at": "0000-00-00T00:00:00.000000Z",
              "updated_at": "0000-00-00T00:00:00.000000Z"
         }
@@ -605,11 +609,11 @@ The API offers several endpoints for managing vehicle rentals. Below are details
         "id": <car-model-id>,
         "brand_id": "<update-brand-id>",
         "name": "<update-car-model-name>",
-        "image": "<update-car-model-image(png,jpeg,jpg)>",
-        "number_ports": "<update-number-ports(int)>",
-        "places": "<update-places(int)>",
-        "air_bag": "<update-air-bag(boolean(0, 1))>",
-        "abs": "<update-abs(boolean(0, 1))>",
+        "image": "<update-car-model-image>",
+        "number_ports": "<update-number-ports>",
+        "places": "<update-places>",
+        "air_bag": "<update-air-bag>",
+        "abs": "<update-abs>",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z"
      }
@@ -643,11 +647,11 @@ The API offers several endpoints for managing vehicle rentals. Below are details
         "id": <car-model-id>,
         "brand_id": <brand-id>,
         "name": "<update-car-model-name>",
-        "image": "<car-model-image(.png,.jpeg,.jpg)>",
-        "number_ports": <number-ports(int)>,
-        "places": <places(int)>,
-        "air_bag": <air-bag(boolean(0, 1))>,
-        "abs": <abs(boolean(0, 1))>,
+        "image": "<car-model-image>",
+        "number_ports": <number-ports>,
+        "places": <places>,
+        "air_bag": <air-bag>,
+        "abs": <abs>,
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z"
      }
@@ -735,7 +739,7 @@ The API offers several endpoints for managing vehicle rentals. Below are details
                 "id": <car-model-id>,
                 "brand_id": <brand-id>,
                 "name": "<car-model-name>",
-                "image": "<car-model-image(.png,.jpeg,.jpg)>",
+                "image": "<car-model-image>",
                 "number_ports": <number-ports>,
                 "places": <places>,
                 "air_bag": <air-bag>,
@@ -767,7 +771,7 @@ The API offers several endpoints for managing vehicle rentals. Below are details
              "id": <car-model-id>,
              "brand_id": <brand-id>,
              "name": "<car-model-name>",
-             "image": "<car-model-image(.png,.jpeg,.jpg)>",
+             "image": "<car-model-image>",
              "number_ports": <number-ports>,
              "places": <places>,
              "air_bag": <air-bag>,
@@ -1216,9 +1220,9 @@ The API offers several endpoints for managing vehicle rentals. Below are details
    
      ```
      {
-         "start_date_period": "<update-start-date-period>",
-         "expected_end_date_period": "<update-expected-end-date-period>",
-         "actual_end_date_period": "<update-actual-end-date-period>"
+         "start_date_period": "<update-start-date-period(date)>",
+         "expected_end_date_period": "<update-expected-end-date-period(date)>",
+         "actual_end_date_period": "<update-actual-end-date-period(date)>"
      }
      ```
      
