@@ -731,7 +731,7 @@ _method  (text)     <PATCH>
    
 ```
 {
-    "name": "<client-name>"=
+    "name": "<client-name>"
 }
 ```
      
