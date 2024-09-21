@@ -6,11 +6,11 @@
 
 <!-- ---------------------------------------------------------------------- -->
 
-## About the Project
+# About the Project
 
 `CarRentPro-API` is a project created for managing vehicle rentals efficiently.
 
-The challenge for this project was to build a RESTful API to handle the entire vehicle rental process. In this project, we implemented CRUD operations (Create, Read, Update, Delete) for vehicles, brands, and models, ensured secure user authentication using [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum) for [JWT](https://jwt.io/introduction)-based authentication, and established a token-based authentication system with token refresh capabilities. The API also manages the rental process, from booking to returning vehicles.
+The challenge for this project was to build a RESTful API to handle the entire vehicle rental process. In this project, we implemented CRUD operations (Create, Read, Update, Delete) for brands, car models, cars, clients and rentals, ensured secure user authentication using [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum) for [JWT](https://jwt.io/introduction)-based authentication, and established a token-based authentication system with token refresh capabilities. The API also manages the rental process, from booking to returning vehicles.
 
 The API was developed using [Laravel](https://laravel.com/), [Docker](https://www.docker.com/), and [MySQL](https://www.mysql.com/), featuring endpoints to create, retrieve, update, and delete vehicle records, as well as manage rentals. A key feature of the API is the ability to filter responses and select specific attributes of the data returned, giving users flexibility to retrieve only the information they need, such as related car models and brand attributes.
 
@@ -20,7 +20,7 @@ This project demonstrates strong skills in API development, secure data handling
 
 <!-- ---------------------------------------------------------------------- -->
 
-## Prerequisites
+# Prerequisites
 
 Before you begin, you will need to have the following tools installed on your machine:<br>
 • [Git](https://git-scm.com/downloads)<br>
@@ -34,9 +34,9 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
 
 <!-- ---------------------------------------------------------------------- -->
 
-## Setting Up the Environment
+# Setting Up the Environment
 
-1. **Download the Project**
+### 1. Download the Project
 
    Clone the project repository to your local machine:
    
@@ -50,11 +50,11 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    cd CarRentPro-API
    ```
    
-2. **Configure and Run Docker**
+### 2. Configure and Run Docker
 
-   Ensure that Docker and Docker Compose are installed and working correctly.
+   **NOTE**: Ensure that Docker and Docker Compose are installed and working correctly.
    
-   • Start the Containers<br><br>
+   • **Start the Containers**
 
    Run the following command to build the images and start the containers:
    
@@ -62,7 +62,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    docker-compose up -d
    ```
 
-   • Stop the Containers<br><br>
+   • **Stop the Containers**
 
    When not in use, stop the containers with:
 
@@ -70,7 +70,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    docker-compose down
    ```
 
-   • Install PHP Dependencies<br><br>
+   • **Install PHP Dependencies**
 
    Use the command `docker ps` to list the containers, you should see something like this:
    
@@ -89,7 +89,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    composer install
    ```
 
-3. **Configure the Application**
+### 3. Configure the Application
 
    Inside the application container, copy the `.env.example` file to `.env`:
    
@@ -108,7 +108,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    DB_PASSWORD=password
    ```
    
-   • Generate the Application Key
+   • **Generate the Application Key**
 
    Generate the Laravel application key:
    
@@ -116,7 +116,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    php artisan key:generate
    ```
    
-   • Run Migrations
+   • **Run Migrations**
 
    Run the migrations to set up the database:
 
@@ -124,15 +124,31 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    php artisan migrate
    ```
 
-   • Run the Seeder
+   • **Run the Seeder**
 
    Run the seeder to create a user in the users table:
 
    ```
    php artisan db:seed
    ```
+
+### 4. Setting Up File Storage
+
+   To properly handle file uploads and ensure that they are accessible, you'll need to create a symbolic link from the public/storage directory to the storage/app/public directory.        This is important because it allows uploaded files to be publicly accessible from the web.
+
+   To do this, run the following command inside the application container:
    
-5. **Access the Project**
+   ```
+   php artisan storage:link
+   ```
+
+   • **Why is this necessary?**
+
+   Laravel uses the storage folder to store uploaded files. The php artisan storage:link command creates a symbolic link that connects the public/storage folder to the actual storage      location, allowing the files to be accessible via a public URL.
+
+   Without this step, any file uploads will be saved, but they won’t be accessible from the application’s public directory.
+   
+### 5. Access the Project
 
    After setup, the API will be available at `http://localhost:8000` (or the port you configured in docker-compose.yml).
 
@@ -142,7 +158,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
 
 <!-- ---------------------------------------------------------------------- -->
 
-## Authentication
+# Authentication
 
 **NOTE**: To avoid issues, include "application/json" in the `Accept` header of your requests:
 
@@ -150,157 +166,95 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
 Accept: application/json
 ```
 
-To access the API endpoints, you will need an authentication token. The API returns a [JWT](https://jwt.io/introduction) token that should be used in subsequent requests. Below are details on how to generate the token. Include the token in the `Authorization` header of your requests:
+To access the API endpoints, you will need an authentication token. The API returns a [JWT](https://jwt.io/introduction) token that should be used in subsequent requests. Below are details on how to generate the token.
 
-```
-Authorization: Bearer {your-token}
-```
-
-#### Authentication Routes
+## Authentication Routes
 
 **NOTE**: I recommend using [Postman](https://www.postman.com/downloads/) to test the API.
 
-1. **Generate Access Token**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/login`<br>
-   • **Request Body:**<br>
-   
-     ```
-     {
-         "email": "test@example.com",
-         "password": "12345"
-     }
-     ```
-     
-   • **Success Response:**
-     **Status: 200**
-   
-     ```
-     {
-         "token": "{your-token}"
-     }
-     ```
-     
-   • **Invalid Credentials Response:**
-     **Status: 403**
-   
-     ```
-     {
-        "message": "Credential(s) are incorrect!"
-     }
-     ```
-     
-     NOTE: Use the email `test@example.com` and password `12345` created when running the `php artisan db:seed` command. If you prefer, you can change the email and password by editing      `database/seeders/DatabaseSeeder.php` in the project root, updating the data as desired, and running the seeders command again. You can also add more users by updating the data         in `DatabaseSeeder.php` and running `php artisan db:seed` again, or by accessing the MySQL container.<br><br>
-
-     **Accessing MySQL Container**
-
-     Use `docker ps` to list the containers:
-
-     ```
-     CONTAINER ID     IMAGE                   COMMAND                  CREATED          STATUS          PORTS                   NAMES
-     <container-id>   CarRentPro-API-app      "docker-php-entrypoi…"   30 minutes ago   Up 30 minutes   0.0.0.0:8000->80/tcp    <container-name>
-     <container-id>   mysql:8.0.39            "docker-entrypoint.s…"   30 minutes ago   Up 30 minutes   0.0.0.0:3306->3306/tcp  <container-name>
-     ```
-
-     Enter the MySQL container:
-
-     ```
-     docker exec -it <container-name-or-id> bash
-     ```
-
-     After entering the container, use the command:
-   
-     ```
-     mysql -u root -p
-     ```
-
-     You will need a password to log in, the root user password is set in the `docker-compose.yml` file, "by default the password is `root`", you will see something like:
-   
-     ```
-     Enter password: "root"
-     ```
-
-     Inside MySQL, you can check if the `car_rent_pro` database was created automatically with the command `SHOW DATABASES;`, you should see something like:
-
-     ```
-     +--------------------+
-     | Database           |
-     +--------------------+
-     | information_schema |
-     | mysql              |
-     | performance_schema |
-     | sys                |
-     | car_rent_pro    |
-     +--------------------+
-     5 rows in set (0.00 sec)
-     ```
-
-     If the `car_rent_pro` database is not created, you can create it using SQL commands within the container:
-
-     ```
-     CREATE DATABASE car_rent_pro;
-     ```
-
-     **NOTE**: If you create the database with a different name, don't forget to configure the database variables in the .env file!
-
-     After that, you have created the database, now just run the migrations with `php artisan migrate`.<br><br>
+### 1. Generate Access Token
+#### • Method: `POST`
+#### • URL: `/api/login`
+#### • Request Body:
  
-2. **Retrieve Logged-In User**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/me`<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-         "me": {
-            "id": 1,
-            "name": "Test User",
-            "email": "test@example.com",
-            "email_verified_at": "0000-00-00T00:00:00.000000Z",
-            "created_at": "0000-00-00T00:00:00.000000Z",
-            "updated_at": "0000-00-00T00:00:00.000000Z"
-         }
-     }
-     ```
+```
+{
+    "email": "test@example.com",
+    "password": "12345"
+}
+```
      
-3. **Logout**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/logout`<br>
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
-        "message": "Logout successful!"
-     }
-     ```
+```
+{
+    "token": "{your-token}"
+}
+```
+     
+#### • Invalid Credentials Response(403):
+   
+```
+{
+    "message": "Credential(s) are incorrect!"
+}
+```
+     
+**NOTE**: Use the email `test@example.com` and password `12345` created when running the `php artisan db:seed` command. If you prefer, you can change the email and password by editing  `database/seeders/DatabaseSeeder.php` in the project root, updating the data as desired, and running the seeders command again. You can also add more users by updating the data in `DatabaseSeeder.php` and running `php artisan db:seed` again. 
+ 
+### 2. Retrieve Logged-In User
+#### • Method: `GET`
+#### • URL: `/api/me`
+#### • Success Response(200):
+   
+```
+{
+    "me": {
+        "id": 1,
+        "name": "Test User",
+        "email": "test@example.com",
+        "email_verified_at": "0000-00-00T00:00:00.000000Z",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z"
+    }
+}
+```
+     
+### 3. Logout
+#### • Method: `POST`
+#### • URL: `/api/logout`
+#### • Success Response(200):
+  
+```
+{
+    "message": "Logout successful!"
+}
+```
 
-4. **Refresh JWT**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/refresh`<br>
-   • **Success Response:**<br>
-     **Status: 200**
+### 4. Refresh JWT
+#### • Method: `POST`
+#### • URL: `/api/refresh`
+#### • Success Response(200):
    
-     ```
-     {
-        "token": "{your-token}"
-     }
-     ```
-   • **Invalid or Expired token Response:**<br>
-     **Status: 401**
+```
+{
+    "token": "{your-token}"
+}
+```
+
+#### • Invalid or Expired token Response(401):
    
-     ```
-     {
-        "message": "Invalid or expired token"
-     }
-     ```
+```
+{
+    "message": "Invalid or expired token"
+}
+```
 
 ---
 
 <!-- ---------------------------------------------------------------------- -->
 
-## Usage
+# Usage
 
 **NOTE**: Include "application/json" in the `Accept` header of your requests and the token in the `Authorization` header:
 
@@ -308,764 +262,626 @@ Authorization: Bearer {your-token}
 Accept: application/json
 ```
 ```
-Authorization: Bearer {your-token} #Include Bearer and then a space and your token
+Authorization: Bearer {your-token}
 ```
 
 The API offers several endpoints for managing vehicle rentals. Below are details on how to interact with each of them.
 
-#### API ENDPOINTS
+## API ENDPOINTS
 
-##### Brands endpoints: 
+### Brands endpoints: 
 
-1. **Create a New Brand**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/brand`<br>
-   • **Request Body (form-data):**<br>
+### 1. Create a New Brand
+#### • Method: `POST`
+#### • URL: `/api/brand`
+#### • Request Body (form-data):
    
-     ```
-     Key      Type       Value
-     name     (text)     <brand-name>
-     image    (file)     <brand-image(.png)>
-     ```
-     **NOTE**: The request body must be sent in form-data format. The image field must contain an image file in PNG format (.png).<br>
+```
+Key      Type       Value
+name     (text)     <brand-name>
+image    (file)     <brand-image(.png)>
+```
+
+**NOTE**: The request body must be sent in form-data format. The image field must contain an image file in PNG format (.png).
      
-   • **Success Response:**<br>
-     **Status: 201**
+#### • Success Response(201):
    
-     ```
-     {
-        "name": "<brand-name>",
-        "image": "<brand-image>",
-        "updated_at": "0000-00-00T00:00:00.000000Z",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "id": <brand-id>
-     }
-     ```
+```
+{
+    "name": "<brand-name>",
+    "image": "<brand-image>",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "id": <brand-id>
+}
+```
      
-2. **Retrieve All Brands**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/brand`<br>
-   • **Success Response:**<br>
-     **Status: 200**
+### 2. Retrieve All Brands
+#### • Method: `GET`
+#### • URL: `/api/brand`
+#### • Success Response(200):
    
-     ```
-     [
-        {
-            "id": <brand-id>,
-            "name": "<brand-name>",
-            "image": "<brand-image>",
-            "created_at": "0000-00-00T00:00:00.000000Z",
-            "updated_at": "0000-00-00T00:00:00.000000Z",
-            "car_models": [
-                 Brand related models
-            ]
-        }
-     ]
-     ```
-     
-3. **Retrieve a Single Brand**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/brand/{id}`<br>
-   • **Parameters:** Brand ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
+```
+[
+    {
         "id": <brand-id>,
         "name": "<brand-name>",
         "image": "<brand-image>",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z",
         "car_models": [
-             Brand related models
+            {
+                Brand related models
+            }
         ]
-     }
-     ```
+    }
+}
+```
      
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-     ```
-     {
-        "message": "The requested resource does not exist."
-     }
-     ```
-     
-4. **Update a Brand**<br>
-   • **Method:** `PUT`<br>
-   • **URL:** `/api/brand/{id}`<br>
-   • **Parameters:** Brand ID<br>
-   • **Request Body (form-data):**
+### 3. Retrieve a Single Brand
+#### • Method: `GET`
+#### • URL: `/api/brand/{id}`
+#### • Parameters: Brand ID
+#### • Success Response(200):
    
-     ```
-     Key      Type       Value
-     name     (text)     <update-brand-name>
-     image    (file)     <update-brand-image(.png)>
-     ```
-     
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-        "id": <brand-id>,
-        "name": "<update-brand-name>",
-        "image": "<update-brand-image>",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
-     
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
-
-5. **Partially Update a Brand**<br>
-   • **Method:** `PATCH`<br>
-   • **URL:** `/api/brand/{id}`<br>
-   • **Parameters:** Brand ID<br>
-   • **Request Body (form-data):**
-   
-     ```
-     Key      Type       Value
-     name     (text)     <update-brand-name>
-     ```
-     
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-        "id": <brand-id>,
-        "name": "<update-brand-name>",
-        "image": "<brand-image>",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
-     
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
-     
-6. **Delete a Brand**<br>
-   • **Method:** `DELETE`<br>
-   • **URL:** `/api/brand/{id}`<br>
-   • **Parameters:** Brand ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
-    
-     ```
-     {
-        "message": "Brand deleted."
-     }
-     ```
-     
-   • **Response Vacation Plan Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to delete. The requested resource does not exist."
-     }
-     ```
-
-##### Car Models endpoints: 
-
-1. **Create a New Car Model**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/car-model`<br>
-   • **Request Body (form-data):**<br>
-   
-     ```
-     Key               Type          Value
-     brand_id          (text)        <brand-id>
-     name              (text)        <car-model-name>
-     image             (file)        <car-model-image(.png,.jpeg,.jpg)>
-     number_ports      (text)        <number-ports(int)>
-     places            (text)        <places(int)>
-     air_bag           (text)        <air-bag(boolean(0, 1))>
-     abs               (text)        <abs(boolean(0, 1))>
-     ```
-     **NOTE**: The request body must be sent in form-data format. The image field must contain an image file in PNG format (.png, .jpeg, .jpg).<br>
-     
-   • **Success Response:**<br>
-     **Status: 201**
-   
-     ```
-     {
-        "brand_id": "<brand-id>",
-        "name": "<car-model-name>",
-        "image": "<car-model-image>",
-        "number_ports": "<number-ports>",
-        "places": "<places>",
-        "air_bag": "<air-bag>",
-        "abs": "<abs>",
-        "updated_at": "0000-00-00T00:00:00.000000Z",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "id": <car-model-id>
-     }
-     ```
-     
-2. **Retrieve All Car Models**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/car-model`<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     [
+```
+{
+    "id": <brand-id>,
+    "name": "<brand-name>",
+    "image": "<brand-image>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "car_models": [
         {
-            "id": <car-model-id>,
-            "brand_id": <brand-id>,
-            "name": "car-model-name",
-            "image": "<car-model-image>",
-            "number_ports": <number-ports>,
-            "places": <places>,
-            "air_bag": <air-bag>,
-            "abs": <abs>,
-            "created_at": "0000-00-00T00:00:00.000000Z",
-            "updated_at": "0000-00-00T00:00:00.000000Z",
-            "brand": {
-                "id": <brand-id>,
-                "name": "<brand-name>",
-                "image": "<brand-image>",
-                "created_at": "0000-00-00T00:00:00.000000Z",
-                "updated_at": "0000-00-00T00:00:00.000000Z"
-           }
+            Brand related models
         }
-     ]
-     ```
+    ]
+}
+```
      
-3. **Retrieve a Single Car Model**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/car-model/{id}`<br>
-   • **Parameters:** Car Model ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-         "id": <car-model-id>,
-         "brand_id": <brand-id>,
-         "name": "car-model-name",
-         "image": "<car-model-image>",
-         "number_ports": <number-ports>,
-         "places": <places>,
-         "air_bag": <air-bag>,
-         "abs": <abs>,
-         "created_at": "0000-00-00T00:00:00.000000Z",
-         "updated_at": "0000-00-00T00:00:00.000000Z",
-         "brand": {
-             "id": <brand-id>,
-             "name": "<brand-name>",
-             "image": "<brand-image>",
-             "created_at": "0000-00-00T00:00:00.000000Z",
-             "updated_at": "0000-00-00T00:00:00.000000Z"
-        }
-     }
-     ```
-     
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-     ```
-     {
-        "message": "The requested resource does not exist."
-     }
-     ```
-     
-4. **Update a Car Model**<br>
-   • **Method:** `PUT`<br>
-   • **URL:** `/api/car-model/{id}`<br>
-   • **Parameters:** Car Model ID<br>
-   • **Request Body (form-data):**
-   
-     ```
-     Key               Type          Value
-     brand_id          (text)        <update-brand-id>
-     name              (text)        <update-car-model-name>
-     image             (file)        <update-car-model-image(png,jpeg,jpg)>
-     number_ports      (text)        <update-number-ports(int)>
-     places            (text)        <update-places(int)>
-     air_bag           (text)        <update-air-bag(boolean(0, 1))>
-     abs               (text)        <update-abs(boolean(0, 1))>
-     ```
-     
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-        "id": <car-model-id>,
-        "brand_id": "<update-brand-id>",
-        "name": "<update-car-model-name>",
-        "image": "<update-car-model-image>",
-        "number_ports": "<update-number-ports>",
-        "places": "<update-places>",
-        "air_bag": "<update-air-bag>",
-        "abs": "<update-abs>",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
-     
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
+### 4. Update a Brand
 
-5. **Partially Update a Car Model**<br>
-   • **Method:** `PATCH`<br>
-   • **URL:** `/api/car-model/{id}`<br>
-   • **Parameters:** Car Model ID<br>
-   • **Request Body (form-data):**
+**Notice: Updating Records with Files**<br>
+
+To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
+
+#### • Method: `POST`
+#### • URL: `/api/brand/{id}`
+#### • Parameters: Brand ID
+#### • Request Body (form-data):
    
-     ```
-     Key      Type       Value
-     name     (text)     <update-car-model-name>
-     ```
+```
+Key        Type       Value
+name       (text)     <update-brand-name>
+image      (file)     <update-brand-image(.png)>
+_method    (text)     <PUT>
+```
      
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
+```
+{
+    "id": <brand-id>,
+    "name": "<update-brand-name>",
+    "image": "<update-brand-image>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
+
+### 5. Partially Update a Brand
+
+**Notice: Updating Records with Files**<br>
+
+To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
+
+#### • Method: `POST`
+#### • URL: `/api/brand/{id}`
+#### • Parameters: Brand ID
+####• Request Body (form-data):
+   
+```
+Key        Type       Value
+name       (text)     <update-brand-name>
+_method    (text)     <PATCH>
+```
+     
+#### • Success Response(200):
+   
+```
+{
+    "id": <brand-id>,
+    "name": "<update-brand-name>",
+    "image": "<brand-image>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
+     
+### 6. Delete a Brand
+#### • Method: `DELETE`
+#### • URL: `/api/brand/{id}`
+#### • Parameters: Brand ID
+#### • Success Response(200):
+    
+```
+{
+    "message": "Brand deleted."
+}
+```
+
+### Car Models endpoints: 
+
+### 1. Create a New Car Model
+#### • Method: `POST`
+#### • URL: `/api/car-model`
+#### • Request Body (form-data):
+   
+```
+Key               Type          Value
+brand_id          (text)        <brand-id>
+name              (text)        <car-model-name>
+image             (file)        <car-model-image(.png,.jpeg,.jpg)>
+number_ports      (text)        <number-ports(int)>
+places            (text)        <places(int)>
+air_bag           (text)        <air-bag(boolean(0, 1))>
+abs               (text)        <abs(boolean(0, 1))>
+```
+
+**NOTE**: The request body must be sent in form-data format. The image field must contain an image file in PNG format (.png, .jpeg, .jpg).
+     
+#### • Success Response(201):
+   
+```
+{
+    "brand_id": "<brand-id>",
+    "name": "<car-model-name>",
+    "image": "<car-model-image>",
+    "number_ports": "<number-ports>",
+    "places": "<places>",
+    "air_bag": "<air-bag>",
+    "abs": "<abs>",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "id": <car-model-id>
+}
+```
+     
+### 2. Retrieve All Car Models
+#### • Method: `GET`
+#### • URL: `/api/car-model`
+#### • Success Response(200):
+   
+```
+[
+    {
         "id": <car-model-id>,
         "brand_id": <brand-id>,
-        "name": "<update-car-model-name>",
+        "name": "car-model-name",
         "image": "<car-model-image>",
         "number_ports": <number-ports>,
         "places": <places>,
         "air_bag": <air-bag>,
         "abs": <abs>,
         "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "brand": {
+            Brand related to the model
+        }
+    }
+]
+```
      
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
+### 3. Retrieve a Single Car Model
+#### • Method: `GET`
+#### • URL: `/api/car-model/{id}`
+#### • Parameters: Car Model ID
+#### • Success Response(200):
    
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "id": <car-model-id>,
+    "brand_id": <brand-id>,
+    "name": "car-model-name",
+    "image": "<car-model-image>",
+    "number_ports": <number-ports>,
+    "places": <places>,
+    "air_bag": <air-bag>,
+    "abs": <abs>,
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "brand": {
+        Brand related to the model
+    }
+}
+```
      
-6. **Delete a Car Model**<br>
-   • **Method:** `DELETE`<br>
-   • **URL:** `/api/car-model/{id}`<br>
-   • **Parameters:** Car Model ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
-    
-     ```
-     {
-        "message": "Car Model deleted."
-     }
-     ```
-     
-   • **Response Car Model Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to delete. The requested resource does not exist."
-     }
-     ```
+### 4. Update a Car Model
 
-##### Cars endpoints: 
+**Notice: Updating Records with Files**<br>
 
-1. **Create a New Car**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/car`<br>
-   • **Request Body:**<br>
+To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
+
+#### • Method: `POST`
+#### • URL: `/api/car-model/{id}`
+#### • Parameters: Car Model ID
+#### • Request Body (form-data):
    
-     ```
-     {
-         "car_model_id": "<car-model-id>",
-         "car_plate": "<car-plate>",
-         "available": "<available(boolean(0, 1))>",
-         "km": "<km(int)>"
-     }
-     ```
+```
+Key               Type          Value
+brand_id          (text)        <update-brand-id>
+name              (text)        <update-car-model-name>
+image             (file)        <update-car-model-image(png,jpeg,jpg)>
+number_ports      (text)        <update-number-ports(int)>
+places            (text)        <update-places(int)>
+air_bag           (text)        <update-air-bag(boolean(0, 1))>
+abs               (text)        <update-abs(boolean(0, 1))>
+_method           (text)        <PUT>
+```
      
-   • **Success Response:**<br>
-     **Status: 201**
+#### • Success Response(200):
    
-     ```
-     {
-        "car_model_id": "<car-model-id>",
+```
+{
+    "id": <car-model-id>,
+    "brand_id": "<update-brand-id>",
+    "name": "<update-car-model-name>",
+    "image": "<update-car-model-image>",
+    "number_ports": "<update-number-ports>",
+    "places": "<update-places>",
+    "air_bag": "<update-air-bag>",
+    "abs": "<update-abs>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
+
+### 5. Partially Update a Car Model
+
+**Notice: Updating Records with Files**<br>
+
+To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
+
+#### • Method: `POST`
+#### • URL: `/api/car-model/{id}`
+#### • Parameters: Car Model ID
+#### • Request Body (form-data):
+   
+```
+Key      Type       Value
+name     (text)     <update-car-model-name>
+_method  (text)     <PATCH>
+```
+     
+#### • Success Response(200):
+   
+```
+{
+    "id": <car-model-id>,
+    "brand_id": <brand-id>,
+    "name": "<update-car-model-name>",
+    "image": "<car-model-image>",
+    "number_ports": <number-ports>,
+    "places": <places>,
+    "air_bag": <air-bag>,
+    "abs": <abs>,
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
+     
+### 6. Delete a Car Model
+#### • Method: `DELETE`
+#### • URL: `/api/car-model/{id}`
+#### • Parameters: Car Model ID
+#### • Success Response(200):
+ 
+```
+{
+    "message": "Car Model deleted."
+}
+```
+
+### Cars endpoints: 
+
+### 1. Create a New Car
+#### • Method: `POST`
+#### • URL: `/api/car`
+#### • Request Body:
+   
+```
+{
+    "car_model_id": "<car-model-id>",
+    "car_plate": "<car-plate(8-digits)>",
+    "available": "<available(boolean(0, 1))>",
+    "km": "<km(int)>"
+}
+```
+     
+#### • Success Response(201):
+   
+```
+{
+    "car_model_id": "<car-model-id>",
+    "car_plate": "<car-plate>",
+    "available": "<available>",
+    "km": "<km>",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "id": <car-id>
+}
+```
+     
+### 2. Retrieve All Cars
+#### • Method: `GET`
+#### • URL: `/api/car`
+#### • Success Response(200):
+   
+```
+[
+    {
+        "id": <car-id>,
+        "car_model_id": <car-model-id>,
         "car_plate": "<car-plate>",
-        "available": "<available>",
-        "km": "<km>",
+        "available": <available>,
+        "km": <km>,
+        "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "id": <car-id>
-     }
-     ```
-     
-2. **Retrieve All Cars**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/car`<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     [
-        {
-            "id": <car-id>,
-            "car_model_id": <car-model-id>,
-            "car_plate": "<car-plate>",
-            "available": <available>,
-            "km": <km>,
-            "created_at": "0000-00-00T00:00:00.000000Z",
-            "updated_at": "0000-00-00T00:00:00.000000Z",
-            "car_model": {
-                "id": <car-model-id>,
-                "brand_id": <brand-id>,
-                "name": "<car-model-name>",
-                "image": "<car-model-image>",
-                "number_ports": <number-ports>,
-                "places": <places>,
-                "air_bag": <air-bag>,
-                "abs": <abs>,
-                "created_at": "0000-00-00T00:00:00.000000Z",
-                "updated_at": "0000-00-00T00:00:00.000000Z"
-           }
+        "car_model": {
+            Car model related to car
         }
-     ]
-     ```
+    }
+]
+```
      
-3. **Retrieve a Single Car**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/car/{id}`<br>
-   • **Parameters:** Car ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
+### 3. Retrieve a Single Car
+#### • Method: `GET`
+#### • URL: `/api/car/{id}`
+#### • Parameters: Car ID
+#### • Success Response(200):
    
-     ```
-     {
-         "id": <car-id>,
-         "car_model_id": <car-model-id>,
-         "car_plate": "<car-plate>",
-         "available": <available>,
-         "km": <km>,
-         "created_at": "0000-00-00T00:00:00.000000Z",
-         "updated_at": "0000-00-00T00:00:00.000000Z",
-         "car_model": {
-             "id": <car-model-id>,
-             "brand_id": <brand-id>,
-             "name": "<car-model-name>",
-             "image": "<car-model-image>",
-             "number_ports": <number-ports>,
-             "places": <places>,
-             "air_bag": <air-bag>,
-             "abs": <abs>,
-             "created_at": "0000-00-00T00:00:00.000000Z",
-             "updated_at": "0000-00-00T00:00:00.000000Z"
-           }
-     }
-     ```
+```
+{
+    "id": <car-id>,
+    "car_model_id": <car-model-id>,
+    "car_plate": "<car-plate>",
+    "available": <available>,
+    "km": <km>,
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "car_model": {
+        Car model related to car
+    }
+}
+```
      
-   • **Response Car Not Found:**<br>
-     **Status: 404**
-     ```
-     {
-        "message": "The requested resource does not exist."
-     }
-     ```
-     
-4. **Update a Car**<br>
-   • **Method:** `PUT`<br>
-   • **URL:** `/api/car/{id}`<br>
-   • **Parameters:** Car ID<br>
-   • **Request Body:**
+### 4. Update a Car
+#### • Method: `PUT`
+#### • URL: `/api/car/{id}`
+#### • Parameters: Car ID
+#### • Request Body:
    
-     ```
-     {
-         "car_model_id": "<update-car-model-id>",
-         "car_plate": "<update-car-plate>",
-         "available": "<update-available(boolean(0, 1))>",
-         "km": "<update-km(int)>"
-     }
-     ```
+```
+{
+    "car_model_id": "<update-car-model-id>",
+    "car_plate": "<update-car-plate(8-digits)>",
+    "available": "<update-available(boolean(0, 1))>",
+    "km": "<update-km(int)>"
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
-        "id": <car-id>,
-        "car_model_id": "<update-car-model-id>",
-        "car_plate": "<update-car-plate>",
-        "available": "<update-available>",
-        "km": "<update-km>",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
-     
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "id": <car-id>,
+    "car_model_id": "<update-car-model-id>",
+    "car_plate": "<update-car-plate>",
+    "available": "<update-available>",
+    "km": "<update-km>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
 
-5. **Partially Update a Car**<br>
-   • **Method:** `PATCH`<br>
-   • **URL:** `/api/car/{id}`<br>
-   • **Parameters:** Car ID<br>
-   • **Request Body:**
+### 5. Partially Update a Car
+#### • Method: `PATCH`
+#### • URL: `/api/car/{id}`
+#### • Parameters: Car ID
+#### • Request Body:
    
-     ```
-     {
-        "car_plate": "<update-car-plate>"
-     }
-     ```
+```
+{
+    "car_plate": "<update-car-plate(8-digits)>"
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
-        "id": <car-id>,
-        "car_model_id": "<car-model-id>",
-        "car_plate": "<update-car-plate>",
-        "available": "<available>",
-        "km": "<km>",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
+```
+{
+    "id": <car-id>,
+    "car_model_id": "<car-model-id>",
+    "car_plate": "<update-car-plate>",
+    "available": "<available>",
+    "km": "<km>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
      
-   • **Response Brand Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
-     
-6. **Delete a Car**<br>
-   • **Method:** `DELETE`<br>
-   • **URL:** `/api/car/{id}`<br>
-   • **Parameters:** Car Model ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
+### 6. Delete a Car
+#### • Method: `DELETE`
+#### • URL: `/api/car/{id}`
+#### • Parameters: Car Model ID
+#### • Success Response(200):
     
-     ```
-     {
-        "message": "Car deleted."
-     }
-     ```
-     
-   • **Response Car Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to delete. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "message": "Car deleted."
+}
+```
 
-##### Clients endpoints: 
+### Clients endpoints: 
 
-1. **Create a New Client**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/client`<br>
-   • **Request Body:**<br>
+### 1. Create a New Client
+#### • Method: `POST`
+#### • URL: `/api/client`
+#### • Request Body:
    
-     ```
-     {
-         "name": "<client-name>"=
-     }
-     ```
+```
+{
+    "name": "<client-name>"
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 201**
+#### • Success Response(201):
    
-     ```
-     {
+```
+{
+    "name": "<client-name>",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "id": <client-id>
+}
+```
+     
+### 2. Retrieve All Clients
+#### • Method: `GET`
+#### • URL: `/api/client`
+#### • Success Response(200):
+   
+```
+[
+    {
+        "id": <client-id>,
         "name": "<client-name>",
-        "updated_at": "0000-00-00T00:00:00.000000Z",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "id": <client-id>
-     }
-     ```
-     
-2. **Retrieve All Clients**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/client`<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     [
-        {
-            "id": <client-id>,
-            "name": "<client-name>",
-            "created_at": "0000-00-00T00:00:00.000000Z",
-            "updated_at": "0000-00-00T00:00:00.000000Z"
-        }
-     ]
-     ```
-     
-3. **Retrieve a Single Client**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/client/{id}`<br>
-   • **Parameters:** Client ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-         "id": <client-id>,
-         "name": "<client-name>",
-         "created_at": "0000-00-00T00:00:00.000000Z",
-         "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
-     
-   • **Response Client Not Found:**<br>
-     **Status: 404**
-     ```
-     {
-        "message": "The requested resource does not exist."
-     }
-     ```
-     
-4. **Update a Client**<br>
-   • **Method:** `PUT`<br>
-   • **URL:** `/api/client/{id}`<br>
-   • **Parameters:** Client ID<br>
-   • **Request Body:**
-   
-     ```
-     {
-         "name": "<update-client-name>"
-     }
-     ```
-     
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     {
-        "id": <client-id>,
-        "name": "<update-client-name>",
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
+    }
+]
+```
      
-   • **Response Cllient Not Found:**<br>
-     **Status: 404**
+### 3. Retrieve a Single Client
+#### • Method: `GET`
+#### • URL: `/api/client/{id}`
+#### • Parameters: Client ID
+#### • Success Response(200):
    
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "id": <client-id>,
+    "name": "<client-name>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
+     
+### 4. Update a Client
+#### • Method: `PUT`
+#### • URL: `/api/client/{id}`
+#### • Parameters: Client ID
+#### • Request Body:
+   
+```
+{
+    "name": "<update-client-name>"
+}
+```
+     
+#### • Success Response(200):
+   
+```
+{
+    "id": <client-id>,
+    "name": "<update-client-name>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
 
-5. **Partially Update a Client**<br>
-   • **Method:** `PATCH`<br>
-   • **URL:** `/api/client/{id}`<br>
-   • **Parameters:** Client ID<br>
-   • **Request Body:**
+### 5. Partially Update a Client
+#### • Method: `PATCH`
+#### • URL: `/api/client/{id}`
+#### • Parameters: Client ID
+#### • Request Body:
    
-     ```
-     {
-        "name": "<update-client-name>"
-     }
-     ```
+```
+{
+    "name": "<update-client-name>"
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
-        "id": <client-id>,
-        "name": "<update-client-name>",
-        "created_at": "0000-00-00T00:00:00.000000Z",
-        "updated_at": "0000-00-00T00:00:00.000000Z"
-     }
-     ```
+```
+{
+    "id": <client-id>,
+    "name": "<update-client-name>",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z"
+}
+```
      
-   • **Response Client Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
-     
-6. **Delete a Client**<br>
-   • **Method:** `DELETE`<br>
-   • **URL:** `/api/client/{id}`<br>
-   • **Parameters:** Client ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
+### 6. Delete a Client
+#### • Method: `DELETE`
+#### • URL: `/api/client/{id}`
+#### • Parameters: Client ID
+#### • Success Response(200):
     
-     ```
-     {
-        "message": "Client deleted."
-     }
-     ```
-     
-   • **Response Client Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to delete. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "message": "Client deleted."
+}
+```
 
-##### Rentals endpoints: 
+### Rentals endpoints: 
 
-1. **Create a New Rental**<br>
-   • **Method:** `POST`<br>
-   • **URL:** `/api/rental`<br>
-   • **Request Body:**<br>
+### 1. Create a New Rental
+#### • Method: `POST`
+#### • URL: `/api/rental`
+#### • Request Body:
    
-     ```
-     {
-         "client_id": <client-id>,
-         "car_id": <car-id>,
-         "start_date_period": "<start-date-period(date)>",
-         "expected_end_date_period": "<expected-end-date-period(date)>",
-         "actual_end_date_period": "<actual-end-date-period(date)>",
-         "daily_rate": <daily-rate(numeric)>,
-         "initial_km": <initial-km(int)>,
-         "final_km": <initial-km(int)>
-     }
-     ```
+```
+{
+    "client_id": <client-id>,
+    "car_id": <car-id>,
+    "start_date_period": "<start-date-period(date)>",
+    "expected_end_date_period": "<expected-end-date-period(date)>",
+    "actual_end_date_period": "<actual-end-date-period(date)>",
+    "daily_rate": <daily-rate(numeric)>,
+    "initial_km": <initial-km(int)>,
+    "final_km": <initial-km(int)>
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 201**
+#### • Success Response(201):
    
-     ```
-     {
+```
+{
+    "client_id": <client-id>,
+    "car_id": <car-id>,
+    "start_date_period": "<start-date-period>",
+    "expected_end_date_period": "<expected-end-date-period>",
+    "actual_end_date_period": "<actual-end-date-period>",
+    "daily_rate": <daily-rate>,
+    "initial_km": <initial-km>,
+    "final_km": <final-km>,
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "id": <rental-id>
+}
+```
+     
+### 2. Retrieve All Rentals
+#### • Method: `GET`
+#### • URL: `/api/rental`
+#### • Success Response(200):
+   
+```
+[
+    {
+        "id": <rental-id>,
         "client_id": <client-id>,
         "car_id": <car-id>,
         "start_date_period": "<start-date-period>",
@@ -1074,207 +890,306 @@ The API offers several endpoints for managing vehicle rentals. Below are details
         "daily_rate": <daily-rate>,
         "initial_km": <initial-km>,
         "final_km": <final-km>,
-        "updated_at": "0000-00-00T00:00:00.000000Z",
         "created_at": "0000-00-00T00:00:00.000000Z",
-        "id": <rental-id>
-     }
-     ```
-     
-2. **Retrieve All Rentals**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/rental`<br>
-   • **Success Response:**<br>
-     **Status: 200**
-   
-     ```
-     [
-        {
-            "id": <rental-id>,
-            "client_id": <client-id>,
-            "car_id": <car-id>,
-            "start_date_period": "<start-date-period>",
-            "expected_end_date_period": "<expected-end-date-period>",
-            "actual_end_date_period": "<actual-end-date-period>",
-            "daily_rate": <daily-rate>,
-            "initial_km": <initial-km>,
-            "final_km": <final-km>,
-            "created_at": "0000-00-00T00:00:00.000000Z",
-            "updated_at": "0000-00-00T00:00:00.000000Z",
-            "client": {
-                "id": <client-id>,
-                "name": "<client-name>",
-                "created_at": "0000-00-00T00:00:00.000000Z",
-                "updated_at": "0000-00-00T00:00:00.000000Z"
-            },
-            "car": {
-                "id": <car-id>,
-                "car_model_id": <car-model-id>,
-                "car_plate": "<car-plate>",
-                "available": <available>,
-                "km": <km>,
-                "created_at": "0000-00-00T00:00:00.000000Z",
-                "updated_at": "0000-00-00T00:00:00.000000Z"
-            }
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "client": {
+            Client related to the rental
+        },
+        "car": {
+            Car related to the rental
         }
-     ]
-     ```
+    }
+]
+```
      
-3. **Retrieve a Single Rental**<br>
-   • **Method:** `GET`<br>
-   • **URL:** `/api/rental/{id}`<br>
-   • **Parameters:** Rental ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
+### 3. Retrieve a Single Rental
+#### • Method: `GET`
+#### • URL: `/api/rental/{id}`
+#### • Parameters: Rental ID
+#### • Success Response(200):
    
-     ```
-     {
-         "id": <rental-id>,
-         "client_id": <client-id>,
-         "car_id": <car-id>,
-         "start_date_period": "<start-date-period>",
-         "expected_end_date_period": "<expected-end-date-period>",
-         "actual_end_date_period": "<actual-end-date-period>",
-         "daily_rate": <daily-rate>,
-         "initial_km": <initial-km>,
-         "final_km": <final-km>,
-         "created_at": "0000-00-00T00:00:00.000000Z",
-         "updated_at": "0000-00-00T00:00:00.000000Z",
-         "client": {
-             "id": <client-id>,
-             "name": "<client-name>",
-             "created_at": "0000-00-00T00:00:00.000000Z",
-             "updated_at": "0000-00-00T00:00:00.000000Z"
-         },
-         "car": {
-             "id": <car-id>,
-             "car_model_id": <car-model-id>,
-             "car_plate": "<car-plate>",
-             "available": <available>,
-             "km": <km>,
-             "created_at": "0000-00-00T00:00:00.000000Z",
-             "updated_at": "0000-00-00T00:00:00.000000Z"
-         }
-     }
-     ```
+```
+{
+    "id": <rental-id>,
+    "client_id": <client-id>,
+    "car_id": <car-id>,
+    "start_date_period": "<start-date-period>",
+    "expected_end_date_period": "<expected-end-date-period>",
+    "actual_end_date_period": "<actual-end-date-period>",
+    "daily_rate": <daily-rate>,
+    "initial_km": <initial-km>,
+    "final_km": <final-km>,
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+    "client": {
+        Client related to the rental
+    },
+    "car": {
+        Car related to the rental
+    }
+}
+```
      
-   • **Response Rental Not Found:**<br>
-     **Status: 404**
-     ```
-     {
-        "message": "The requested resource does not exist."
-     }
-     ```
-     
-4. **Update a Rental**<br>
-   • **Method:** `PUT`<br>
-   • **URL:** `/api/rental/{id}`<br>
-   • **Parameters:** Rental ID<br>
-   • **Request Body:**
+### 4. Update a Rental
+#### • Method: `PUT`
+#### • URL: `/api/rental/{id}`
+#### • Parameters: Rental ID
+#### • Request Body:
    
-     ```
-     {
-         "client_id": <update-client-id>,
-         "car_id": <update-car-id>,
-         "start_date_period": "<update-start-date-period(date)>",
-         "expected_end_date_period": "<update-expected-end-date-period(date)>",
-         "actual_end_date_period": "<update-actual-end-date-period(date)>",
-         "daily_rate": <update-daily-rate(numeric)>,
-         "initial_km": <update-initial-km(int)>,
-         "final_km": <update-initial-km(int)>
-     }
-     ```
+```
+{
+    "client_id": <update-client-id>,
+    "car_id": <update-car-id>,
+    "start_date_period": "<update-start-date-period(date)>",
+    "expected_end_date_period": "<update-expected-end-date-period(date)>",
+    "actual_end_date_period": "<update-actual-end-date-period(date)>",
+    "daily_rate": <update-daily-rate(numeric)>,
+    "initial_km": <update-initial-km(int)>,
+    "final_km": <update-initial-km(int)>
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
-         "id": <rental-id>,
-         "client_id": <update-client-id>,
-         "car_id": <update-car-id>,
-         "start_date_period": "<update-start-date-period>",
-         "expected_end_date_period": "<update-expected-end-date-period>",
-         "actual_end_date_period": "<update-actual-end-date-period>",
-         "daily_rate": <update-daily-rate>,
-         "initial_km": <update-initial-km>,
-         "final_km": <update-final-km>,
-         "created_at": "0000-00-00T00:00:00.000000Z",
-         "updated_at": "0000-00-00T00:00:00.000000Z",
-     }
-     ```
-     
-   • **Response Rental Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "id": <rental-id>,
+    "client_id": <update-client-id>,
+    "car_id": <update-car-id>,
+    "start_date_period": "<update-start-date-period>",
+    "expected_end_date_period": "<update-expected-end-date-period>",
+    "actual_end_date_period": "<update-actual-end-date-period>",
+    "daily_rate": <update-daily-rate>,
+    "initial_km": <update-initial-km>,
+    "final_km": <update-final-km>,
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+}
+```
 
-5. **Partially Update a Rental**<br>
-   • **Method:** `PATCH`<br>
-   • **URL:** `/api/rental/{id}`<br>
-   • **Parameters:** Rental ID<br>
-   • **Request Body:**
+### 5. Partially Update a Rental
+#### • Method: `PATCH`
+#### • URL: `/api/rental/{id}`
+#### • Parameters: Rental ID
+#### • Request Body:
    
-     ```
-     {
-         "start_date_period": "<update-start-date-period(date)>",
-         "expected_end_date_period": "<update-expected-end-date-period(date)>",
-         "actual_end_date_period": "<update-actual-end-date-period(date)>"
-     }
-     ```
+```
+{
+    "start_date_period": "<update-start-date-period(date)>",
+    "expected_end_date_period": "<update-expected-end-date-period(date)>",
+    "actual_end_date_period": "<update-actual-end-date-period(date)>"
+}
+```
      
-   • **Success Response:**<br>
-     **Status: 200**
+#### • Success Response(200):
    
-     ```
-     {
-         "id": <rental-id>,
-         "client_id": <client-id>,
-         "car_id": <car-id>,
-         "start_date_period": "<update-start-date-period>",
-         "expected_end_date_period": "<update-expected-end-date-period>",
-         "actual_end_date_period": "<update-actual-end-date-period>",
-         "daily_rate": <daily-rate>,
-         "initial_km": <initial-km>,
-         "final_km": <final-km>,
-         "created_at": "0000-00-00T00:00:00.000000Z",
-         "updated_at": "0000-00-00T00:00:00.000000Z",
-     }
-     ```
-     
-   • **Response Rental Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to update. The requested resource does not exist."
-     }
-     ```
-     
-6. **Delete a Rental**<br>
-   • **Method:** `DELETE`<br>
-   • **URL:** `/api/rental/{id}`<br>
-   • **Parameters:** Rental ID<br>
-   • **Success Response:**<br>
-     **Status: 200**
+```
+{
+    "id": <rental-id>,
+    "client_id": <client-id>,
+    "car_id": <car-id>,
+    "start_date_period": "<update-start-date-period>",
+    "expected_end_date_period": "<update-expected-end-date-period>",
+    "actual_end_date_period": "<update-actual-end-date-period>",
+    "daily_rate": <daily-rate>,
+    "initial_km": <initial-km>,
+    "final_km": <final-km>,
+    "created_at": "0000-00-00T00:00:00.000000Z",
+    "updated_at": "0000-00-00T00:00:00.000000Z",
+}
+```
+
+### 6. Delete a Rental
+#### • Method: `DELETE`
+#### • URL: `/api/rental/{id}`
+#### • Parameters: Rental ID
+#### • Success Response(200):
     
-     ```
-     {
-        "message": "Rental deleted."
-     }
-     ```
-     
-   • **Response Rental Not Found:**<br>
-     **Status: 404**
-   
-     ```
-     {
-        "message": "Unable to delete. The requested resource does not exist."
-     }
-     ```
+```
+{
+    "message": "Rental deleted."
+}
+```
+
+## Response Request Not Found (Status: 404)
+
+### Response request not found (GET)
+
+```
+{
+    "message": "The requested resource does not exist."
+}
+```
+
+### Response request not found (PUT/PATCH)
+
+```
+{
+    "message": "Unable to update. The requested resource does not exist."
+}
+```
+
+### Response request not found (DELETE)
+
+```
+{
+    "message": "Unable to delete. The requested resource does not exist."
+}
+```
+
+## Customizing the Response
+
+API endpoints allow dynamic customization of the response by providing the option to select specific attributes and filter the results.
+
+### Selecting Attributes
+
+To choose which attributes are returned in the response, you can pass the `attributes` parameter in the query string. This parameter should contain a comma-separated list of the desired attributes. For example:
+
+#### • Method: `GET`
+#### • URL: `/api/brand?attributes=id,name`
+#### • Success Response(200):
+
+```
+[
+    {
+        "id": <brand-id>,
+        "name": "<brand-name>",
+        "car_models": [
+            Brand related models
+        ]
+    }
+]
+ ```
+
+This will return only the id and name attributes of each brand.
+
+### Filtering Results
+
+To filter the results based on certain criteria, you can use the `filter` parameter in the query string. The filter should be formatted as filter=`column:comparator:value`. For example:
+
+#### • Method: `GET`
+#### • URL: `/api/brand?filter=id:=:6`
+#### • Success Response(200):
+
+```
+[
+    {
+        "id": 6,
+        "name": "<brand-name>",
+        "image": "<brand-image>",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "car_models": [
+            Brand related models
+        ]
+    }
+]
+```
+
+This will return only brands that match the filter criteria (e.g. brand with id "6").
+  
+#### You can also combine multiple filter conditions using a semicolon `;`. For example:
+
+#### • Method: `GET`
+#### • URL: `/api/brand?filter=name:like:%o%;id:=:1`
+
+### Including Related Records
+
+You can also include related records, such as car models, in the response by using the `attributes_car_models` parameter. For example:
+
+#### • Method: `GET`
+#### • URL: `/api/brand?attributes_car_models=name,image,places`
+#### • Success Response(200):
+
+```
+[
+    {
+        "id": <brand-id>,
+        "name": "<brand-name>",
+        "image": "<brand-image>",
+        "created_at": "0000-00-00T00:00:00.000000Z",
+        "updated_at": "0000-00-00T00:00:00.000000Z",
+        "car_models": [
+            {
+                "id": <car-model-id>,
+                "brand_id": <brand-id>,
+                "name": "<car-model-name>",
+                "image": "<car-model-image>",
+                "places": <places>
+            }
+        ]
+    }
+]
+```
+
+This will include related car models with only the name, image and places attributes. If no specific attributes are provided, all related car models will be returned.
+
+### Using Parameters Together
+
+You can combine these parameters in a single request for more specific results. Parameters should be separated by an ampersand `&` as `par1&par2&par3`. For example:
+
+#### • Method: `GET`
+#### • URL: `/api/brand?attributes=id,name&attributes_car_models=name,places&filter=name:like:bm%`
+#### • Success Response(200):
+
+```
+[
+    {
+        "id": <brand-id>,
+        "name": "BMW",
+        "car_models": [
+            {
+                "id": <car-model-id>,
+                "brand_id": <brand-id>,
+                "name": "<car-model-name>",
+                "places": <places>
+            }
+        ]
+    }
+]
+```
+
+This request will return only the id and name attributes of brands that match the filter criteria (e.g., brands with the name like "bm%"), and it will also include related car models 
+with only the name and places attributes.
+
+## Custom Response Examples
+
+You can customize the response for different endpoints using the following parameters:
+
+### Custom Response for Brands
+
+**Parameters**:<br>
+    • **attributes**: Specifies the attributes you want to return.<br>
+    • **attributes_car_models**: Includes attributes of related car models.<br>
+    • **filter**: Applies filters to the results.
+    
+### Custom Response for Car Models
+    
+**Parameters**:<br>
+    • **attributes**: Specifies the attributes you want to return.<br>
+    • **attributes_brand**: Includes attributes of the related brand.<br>
+    • **filter**: Applies filters to the results.
+    
+### Custom Response for Cars
+    
+**Parameters**:<br>
+    • **attributes**: Specifies the attributes you want to return.<br>
+    • **attributes_car_model**: Includes attributes of the related car model.<br>
+    • **filter**: Applies filters to the results.
+    
+### Custom Response for Clients
+    
+**Parameters**:<br>
+    • **attributes**: Specifies the attributes you want to return.<br>
+    • **filter**: Applies filters to the results.
+    
+### Custom Response for Rentals
+    
+**Parameters**:<br>
+    • **attributes**: Specifies the attributes you want to return.<br>
+    • **attributes_client**: Includes attributes of the related client.<br>
+    • **attributes_car**: Includes attributes of the related car.<br>
+    • **filter**: Applies filters to the results.
 
 ---
 
@@ -1282,13 +1197,13 @@ The API offers several endpoints for managing vehicle rentals. Below are details
 
 ## Contribution
 
-1. Fork the project.
-2. Create a new branch with your changes: `git checkout -b my-feature`.
-3. Save your changes and create a commit explaining what was changed: `git commit -m "feature: My new feature"`.
-4. Push your changes to the main branch: `git push origin my-feature`.
-5. Open a pull request on the original repository and wait for the review.
+#### 1. Fork the project.
+#### 2. Create a new branch with your changes: `git checkout -b my-feature`.
+#### 3. Save your changes and create a commit explaining what was changed: `git commit -m "feature: My new feature"`.
+#### 4. Push your changes to the main branch: `git push origin my-feature`.
+#### 5. Open a pull request on the original repository and wait for the review.
 
-#### Contributions are always welcome! Feel free to open issues to report bugs, suggest improvements, or discuss new features.
+### Contributions are always welcome! Feel free to open issues to report bugs, suggest improvements, or discuss new features.
 
 ---
 
@@ -1328,7 +1243,7 @@ The following tools were used in the construction of the project:
 
 <a href="https://www.linkedin.com/in/gabriel-veloso-2183b82b6/">
 Gabriel Veloso Pinheiro</a>
- <br />
+<br /><br />
  
 [![Gmail Badge](https://img.shields.io/badge/-gaabrielvelooso@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:gaabrielvelooso@gmail.com)](mailto:gaabrielvelooso@gmail.com)
 
@@ -1338,7 +1253,7 @@ Gabriel Veloso Pinheiro</a>
 
 ## License
 
-This project is licensed under the [MIT](./LICENSE) License.
+#### This project is licensed under the [MIT](./LICENSE) License.
 
-Made by Gabriel Veloso Pinheiro👋🏽 [Get in touch!](https://www.linkedin.com/in/gabriel-veloso-2183b82b6/)
+#### Made by Gabriel Veloso Pinheiro👋🏽 [Get in touch!](https://www.linkedin.com/in/gabriel-veloso-2183b82b6/)
 
