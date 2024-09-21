@@ -19,10 +19,18 @@ class CarController extends Controller
 
         if($request->has('attributes_car_model')) {
             $attributes_car_model = explode(',', $request->get('attributes_car_model'));
-            $attributes_car_model = 'carModel:id,' . implode(',', $attributes_car_model);
+            $attributes_car_model = 'carModel:id,brand_id,' . implode(',', $attributes_car_model);
             $carRepository->selectAttributesRelatedRecords($attributes_car_model);
         }else {
             $carRepository->selectAttributesRelatedRecords('carModel');
+        }
+
+        if($request->has('attributes_rental')) {
+            $attributes_rental = explode(',', $request->get('attributes_rental'));
+            $attributes_rental = 'rental:id,client_id,car_id,' . implode(',', $attributes_rental);
+            $carRepository->selectAttributesRelatedRecords($attributes_rental);
+        }else {
+            $carRepository->selectAttributesRelatedRecords('rental');
         }
 
         if($request->has('filter')) {
@@ -43,6 +51,7 @@ class CarController extends Controller
     public function store(CarRequest $request)
     {
         $car = Car::create([
+            'rental_id' => $request->rental_id,
             'car_model_id' => $request->car_model_id,
             'car_plate' => $request->car_plate,
             'available' => $request->available,
@@ -57,7 +66,7 @@ class CarController extends Controller
      */
     public function show($id)
     {
-        $car = Car::with('carModel')->find($id);
+        $car = Car::with('carModel', 'rental')->find($id);
 
         if($car === null) {
             return response()->json([
@@ -79,6 +88,10 @@ class CarController extends Controller
             return response()->json([
                 'message' => 'Unable to update. The requested resource does not exist.'
             ], 404);
+        }
+
+        if($request->has('rental_id')) {
+            $car->rental_id = $request->rental_id;
         }
 
         if($request->has('car_model_id')) {

@@ -25,6 +25,9 @@ class CarRequest extends FormRequest
             'car_model_id' => [
                 'exists:car_models,id'
             ],
+            'rental_id' => [
+                'exists:rentals,id'
+            ],
             'car_plate' => [
                 'required',
                 'min:8',

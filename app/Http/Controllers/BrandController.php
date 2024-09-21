@@ -20,7 +20,7 @@ class BrandController extends Controller
 
         if($request->has('attributes_car_models')) {
             $attributes_car_models = explode(',', $request->get('attributes_car_models'));
-            $attributes_car_models = 'carModels:id,' . implode(',', $attributes_car_models);
+            $attributes_car_models = 'carModels:id,brand_id,' . implode(',', $attributes_car_models);
             $brandRepository->selectAttributesRelatedRecords($attributes_car_models);
         }else {
             $brandRepository->selectAttributesRelatedRecords('carModels');

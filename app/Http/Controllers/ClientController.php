@@ -17,6 +17,14 @@ class ClientController extends Controller
     {
         $clientRepository = new ClientRepository(new Client());
 
+        if($request->has('attributes_rentals')) {
+            $attributes_rentals = explode(',', $request->get('attributes_rentals'));
+            $attributes_rentals = 'rentals:id,client_id,car_id,' . implode(',', $attributes_rentals);
+            $clientRepository->selectAttributesRelatedRecords($attributes_rentals);
+        }else {
+            $clientRepository->selectAttributesRelatedRecords('rentals');
+        }
+
         if($request->has('filter')) {
             $clientRepository->filter($request->filter);          
         }

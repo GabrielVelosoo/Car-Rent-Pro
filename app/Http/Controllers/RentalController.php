@@ -27,7 +27,7 @@ class RentalController extends Controller
 
         if($request->has('attributes_car')) {
             $attributes_car = explode(',', $request->get('attributes_car'));
-            $attributes_car = 'car:id,' . implode(',', $attributes_car);
+            $attributes_car = 'car:id,car_model_id,' . implode(',', $attributes_car);
             $rentalRepository->selectAttributesRelatedRecords($attributes_car);
         }else {
             $rentalRepository->selectAttributesRelatedRecords(['car']);
