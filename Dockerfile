@@ -24,6 +24,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 
 RUN a2enmod rewrite
 
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
 # Configure DocumentRoot
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
 
