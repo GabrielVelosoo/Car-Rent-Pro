@@ -1,17 +1,16 @@
 #!/bin/sh
 
-# Exibe uma mensagem de início
 echo "Iniciando o entrypoint..."
 
 # Executa as migrations
 echo "Executando as migrations..."
-if php artisan migrate --force; then
-    echo "Migrations executadas com sucesso!"
-else
+php artisan migrate --force
+
+if [ $? -ne 0 ]; then
     echo "Erro ao executar as migrations!"
     exit 1
 fi
 
-# Inicia o servidor PHP-FPM
+echo "Migrations executadas com sucesso!"
 echo "Iniciando o PHP-FPM..."
 exec php-fpm

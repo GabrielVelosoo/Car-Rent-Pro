@@ -46,7 +46,10 @@ RUN composer install --no-dev --optimize-autoloader
 
 USER root
 
-# Exposing port 80 to Apache server
-EXPOSE 80
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
+
+# Exposing port 80 to Apache server
+EXPOSE 80
