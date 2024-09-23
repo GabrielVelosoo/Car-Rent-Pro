@@ -48,3 +48,5 @@ USER root
 
 # Exposing port 80 to Apache server
 EXPOSE 80
+
+ENTRYPOINT ["entrypoint.sh"]
