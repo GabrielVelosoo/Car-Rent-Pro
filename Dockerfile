@@ -26,14 +26,13 @@ RUN a2enmod rewrite
 
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Configure DocumentRoot
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
-
 # Copying Composer to the image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copying the source code to the working directory
 COPY . /var/www/html
+
+RUN ls -l /var/www/html
 
 RUN rm -rf /var/www/html/vendor
 
