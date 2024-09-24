@@ -20,15 +20,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Run seeders
-echo "Run seeders..."
-php artisan db:seed --force
-
-if [ $? -ne 0 ]; then
-    echo "Error run seeders!"
-    exit 1
-fi
-
 # Create storage link
 echo "Creating storage link..."
 php artisan storage:link
@@ -38,7 +29,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Migrations, seeders, and storage link created successfully!"
+echo "Migrations and storage link created successfully!"
 
 echo "Starting Apache..."
 exec apache2-foreground
