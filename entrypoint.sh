@@ -1,16 +1,44 @@
 #!/bin/sh
 
-echo "Iniciando o entrypoint..."
+echo "Starting the entrypoint..."
 
-# Executa as migrations
-echo "Executando as migrations..."
-php artisan migrate --force
+# Install Composer dependencies
+echo "Install Composer dependencies..."
+composer install --optimize-autoloader
 
 if [ $? -ne 0 ]; then
-    echo "Erro ao executar as migrations!"
+    echo "Error install Composer dependencies!"
     exit 1
 fi
 
-echo "Migrations executadas com sucesso!"
-echo "Iniciando o PHP-FPM..."
-exec php-fpm
+# Generate application key
+echo "Generate application key..."
+php artisan key:generate --force
+
+if [ $? -ne 0 ]; then
+    echo "Error generate application key!"
+    exit 1
+fi
+
+# Run migrations
+echo "Run migrations..."
+php artisan migrate --force
+
+if [ $? -ne 0 ]; then
+    echo "Error run migrations!"
+    exit 1
+fi
+
+# Run seeders
+echo "Run seeders..."
+php artisan db:seed --force
+
+if [ $? -ne 0 ]; then
+    echo "Error run seeders!"
+    exit 1
+fi
+
+echo "Migrations and seeders run success!"
+
+echo "Starting Apache..."
+exec apache2-foreground
