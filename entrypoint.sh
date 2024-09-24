@@ -11,6 +11,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Waiting MySQL ready
+until nc -z mysql 3306; do
+  echo "Aguardando MySQL..."
+  sleep 2
+done
+
 # Run migrations
 echo "Run migrations..."
 php artisan migrate --force
