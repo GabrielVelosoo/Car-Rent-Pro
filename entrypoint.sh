@@ -12,8 +12,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Waiting MySQL ready
-echo "Aguardando MySQL..."
-until nc -z mysql 3306; do
+echo "Waiting MySQL..."
+while ! nc -z mysql 3306; do
     sleep 1
 done
 
