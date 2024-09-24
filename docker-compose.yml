@@ -7,4 +7,11 @@ services:
       - .:/var/www/html
     ports:
       - "8000:80"
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=dpg-crpeseqj1k6c73c4v9i0-a
+      - DB_PORT=5432
+      - DB_DATABASE=car_rent_pro
+      - DB_USERNAME=gb_prod
+      - DB_PASSWORD=y16UT1o3u5NqwogCv1Bjt2vCLUxbbUc0
       
