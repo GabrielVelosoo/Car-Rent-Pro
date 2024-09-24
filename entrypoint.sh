@@ -12,9 +12,9 @@ if [ $? -ne 0 ]; then
 fi
 
 # Waiting MySQL ready
-until nc -z mysql 3306; do
-  echo "Aguardando MySQL..."
-  sleep 2
+until mysqladmin ping -h mysql --silent; do
+    echo "Waiting MySQL..."
+    sleep 2
 done
 
 # Run migrations
