@@ -11,15 +11,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Generate application key
-echo "Generate application key..."
-php artisan key:generate --force
-
-if [ $? -ne 0 ]; then
-    echo "Error generate application key!"
-    exit 1
-fi
-
 # Run migrations
 echo "Run migrations..."
 php artisan migrate --force
