@@ -12,8 +12,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Waiting MySQL ready
-until mysqladmin ping -h mysql --silent; do
-    echo "Waiting MySQL..."
+until nc -z mysql 3306; do
+    echo "Aguardando MySQL..."
     sleep 2
 done
 
