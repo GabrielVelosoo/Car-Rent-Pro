@@ -15,13 +15,12 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libonig-dev \
     libcurl4-openssl-dev \
-    netcat-openbsd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Configuring and installing PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip intl xml opcache mysqli pdo pdo_mysql curl
+    && docker-php-ext-install gd zip intl xml opcache curl
 
 RUN a2enmod rewrite
 
