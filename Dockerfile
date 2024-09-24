@@ -16,12 +16,13 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libcurl4-openssl-dev \
     libpq-dev \
+    default-mysql-client \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Configuring and installing PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip intl xml opcache pgsql pdo_pgsql curl
+    && docker-php-ext-install gd zip intl xml opcache mysqli pdo_mysql curl pgsql pdo_pgsql
 
 RUN a2enmod rewrite
 
