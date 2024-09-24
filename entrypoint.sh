@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Starting the entrypoint..."
 
@@ -11,7 +12,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Waiting MySQL ready
+# Log database connection details
+echo "DB_HOST: $DB_HOST"
+echo "DB_DATABASE: $DB_DATABASE"
+
+# Waiting for MySQL to be ready
 echo "Waiting MySQL..."
 while ! nc -z mysql 3306; do
     sleep 1
