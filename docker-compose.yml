@@ -7,15 +7,4 @@ services:
       - .:/var/www/html
     ports:
       - "8000:80"
-    depends_on:
-      - mysql
-
-  mysql:
-    image: mysql:8.0.39
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: car_rent_pro
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+      
