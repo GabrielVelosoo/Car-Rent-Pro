@@ -13,7 +13,7 @@ RUN apk add --no-cache \
 
 # Configuring and installing PHP extensions
 RUN docker-php-ext-install gd \
-    && docker-php-ext-install zip mysqli pdo pdo_mysql pgsql pdo_pgsql
+    && docker-php-ext-install zip mysqli pdo_mysql pgsql pdo_pgsql
 
 # Copying Composer to the image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

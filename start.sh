@@ -10,9 +10,6 @@ if [ ! -f "$FLAG_FILE" ]; then
     echo "Run migrations..."
     php artisan migrate --force
 
-    echo "Run the seeds in database..."
-    php artisan db:seed --force
-
     echo "Create storage link..."
     php artisan storage:link
 
