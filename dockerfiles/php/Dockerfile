@@ -27,8 +27,10 @@ WORKDIR /var/www
 # Copy the project files to the container
 COPY . /var/www
 
-# Change ownership of the project files
-RUN chown -R myuser:myuser /var/www
+# Ensure that the storage and bootstrap/cache directories are writable
+RUN chown -R myuser:myuser /var/www \
+    && mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
+    && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache
 
 # Switch to the new user
 USER myuser
@@ -44,9 +46,6 @@ USER root
 
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/start.sh
-
-# Ensure that the storage and bootstrap/cache directories are writable
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Switch back to myuser
 USER myuser
