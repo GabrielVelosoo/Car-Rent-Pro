@@ -45,14 +45,14 @@ USER root
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/start.sh
 
+# Ensure that the storage and bootstrap/cache directories are writable
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
 # Switch back to myuser
 USER myuser
 
 # Install Composer dependencies
 RUN composer install --optimize-autoloader
-
-# Ensure that the storage and bootstrap/cache directories are writable
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Exposing port 9000 to Nginx server
 EXPOSE 9000
