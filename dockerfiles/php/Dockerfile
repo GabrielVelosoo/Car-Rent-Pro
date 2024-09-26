@@ -26,7 +26,8 @@ COPY . /var/www
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
-    && chown -R www-data:www-data /var/www/storage /var/www/public
+&& chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Copy Nginx configuration file
 COPY ./dockerfiles/nginx/nginx.conf /etc/nginx/nginx.conf
@@ -47,9 +48,8 @@ RUN chmod +x /dockerfiles/nginx/start.sh
 # Install Composer dependencies
 RUN composer install --optimize-autoloader
 
-# Exposing ports for Nginx and PHP-FPM
+# Exposing ports for Nginx
 EXPOSE 80
-EXPOSE 9000
 
 # Command to start the application
 CMD ["/dockerfiles/nginx/start.sh"]

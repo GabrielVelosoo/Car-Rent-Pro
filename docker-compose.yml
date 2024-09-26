@@ -6,12 +6,8 @@ services:
       dockerfile: ./dockerfiles/php/Dockerfile
     volumes:
       - .:/var/www
-    expose:
-      - 80
-      - 9000
     ports:
       - 80:80
-      - 9000:9000
     command: ["./dockerfiles/nginx/start.sh"]
     depends_on:
       - mysql
