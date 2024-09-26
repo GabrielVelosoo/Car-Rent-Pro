@@ -25,7 +25,7 @@ WORKDIR /var/www
 COPY . /var/www
 
 # Copy custom PHP-FPM configuration (www.conf)
-COPY ./docker/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./dockerfiles/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Copy the startup script
 COPY start.sh /usr/local/bin/start.sh
