@@ -29,7 +29,8 @@ COPY . /var/www
 
 # Ensure that the storage, bootstrap/cache, and vendor directories are created and writable
 RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache /var/www/vendor \
-    && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache /var/www/vendor
+    && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache /var/www/vendor /var/www \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/vendor /var/www
 
 # Switch to the new user
 USER myuser
