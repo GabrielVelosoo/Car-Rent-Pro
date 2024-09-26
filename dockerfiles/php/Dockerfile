@@ -26,8 +26,7 @@ COPY . /var/www
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
-    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+    && chown -R www-data:www-data /var/www/storage /var/www/public
 
 # Copy Nginx configuration file
 COPY ./dockerfiles/nginx/nginx.conf /etc/nginx/nginx.conf
