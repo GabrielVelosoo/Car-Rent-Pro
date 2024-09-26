@@ -29,7 +29,6 @@ COPY . /var/www
 
 # Ensure that the storage and bootstrap/cache directories exist and are writable
 RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
-    && chown -R myuser:myuser /var/www \
     && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache
 
 # Switch to the new user
@@ -52,9 +51,6 @@ USER myuser
 
 # Install Composer dependencies
 RUN composer install --optimize-autoloader
-
-# Ensure that the storage and bootstrap/cache directories are writable
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Exposing port 9000 to Nginx server
 EXPOSE 9000
