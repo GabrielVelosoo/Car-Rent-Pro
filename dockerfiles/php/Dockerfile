@@ -39,14 +39,17 @@ COPY ./dockerfiles/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
 # Copy the startup script
 COPY start.sh /usr/local/bin/start.sh
 
+# Switch back to root to change permissions
+USER root
+
 # Make the startup script executable
 RUN chmod +x /usr/local/bin/start.sh
 
+# Switch back to myuser
+USER myuser
+
 # Install Composer dependencies
 RUN composer install --optimize-autoloader
-
-# Switch back to root to modify permissions
-USER root
 
 # Ensure that the storage and bootstrap/cache directories are writable
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
