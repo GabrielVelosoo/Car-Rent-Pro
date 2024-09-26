@@ -18,11 +18,20 @@ RUN docker-php-ext-install gd \
 # Copying Composer to the image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Create a user not root
+RUN adduser -D myuser
+
 # Setting the default working directory
 WORKDIR /var/www
 
 # Copy the project files to the container
 COPY . /var/www
+
+# Change ownership of the project files
+RUN chown -R myuser:myuser /var/www
+
+# Switch to the new user
+USER myuser
 
 # Copy custom PHP-FPM configuration (www.conf)
 COPY ./dockerfiles/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
@@ -35,6 +44,9 @@ RUN chmod +x /usr/local/bin/start.sh
 
 # Install Composer dependencies
 RUN composer install --optimize-autoloader
+
+# Switch back to root to modify permissions
+USER root
 
 # Ensure that the storage and bootstrap/cache directories are writable
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
