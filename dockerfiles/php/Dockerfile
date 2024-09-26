@@ -26,11 +26,14 @@ COPY . /var/www
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
-    && chown -R www-data:www-data /var/www
+    && chown -R www-data:www-data /var/www/storage /var/www/public
 
 # Copy Nginx configuration file
 COPY ./dockerfiles/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./dockerfiles/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Copy FastCGI parameters file
+COPY ./dockerfiles/nginx/fastcgi_params /etc/nginx/fastcgi_params
 
 # Copy PHP-FPM configuration file
 COPY ./dockerfiles/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
