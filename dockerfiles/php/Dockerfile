@@ -27,9 +27,9 @@ WORKDIR /var/www
 # Copy the project files to the container
 COPY . /var/www
 
-# Ensure that the storage and bootstrap/cache directories exist and are writable
-RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
-    && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache
+# Ensure that the storage, bootstrap/cache, and vendor directories are created and writable
+RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache /var/www/vendor \
+    && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache /var/www/vendor
 
 # Switch to the new user
 USER myuser
