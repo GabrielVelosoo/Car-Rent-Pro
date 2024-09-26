@@ -20,5 +20,8 @@ else
     echo "Migrations have already been executed previously. Skipping execution."
 fi
 
-echo "Starting the PHP-FPM..."
-php-fpm -F
+# Start PHP-FPM
+php-fpm &
+
+# Start Nginx
+nginx -g 'daemon off;'

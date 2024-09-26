@@ -9,17 +9,14 @@ RUN apk add --no-cache \
     libzip-dev \
     zlib-dev \
     git \
-    libpq-dev
+    libpq-dev \
+    nginx
 
 # Configuring and installing PHP extensions
-RUN docker-php-ext-install gd \
-    && docker-php-ext-install zip mysqli pdo_mysql pgsql pdo_pgsql
+RUN docker-php-ext-install gd zip mysqli pdo_mysql pgsql pdo_pgsql
 
 # Copying Composer to the image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Create a user not root
-RUN adduser -D myuser
 
 # Setting the default working directory
 WORKDIR /var/www
@@ -27,34 +24,29 @@ WORKDIR /var/www
 # Copy the project files to the container
 COPY . /var/www
 
-# Ensure that the storage, bootstrap/cache, and vendor directories are created and writable
-RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache /var/www/vendor \
-    && chown -R myuser:myuser /var/www/storage /var/www/bootstrap/cache /var/www/vendor /var/www \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/vendor /var/www
+# Create necessary directories and set permissions
+RUN mkdir -p /var/www/storage/logs /var/www/bootstrap/cache \
+    && chown -R www-data:www-data /var/www
 
-# Switch to the new user
-USER myuser
+# Copy Nginx configuration file
+COPY ./dockerfiles/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./dockerfiles/nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Copy custom PHP-FPM configuration (www.conf)
+# Copy PHP-FPM configuration file
 COPY ./dockerfiles/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Copy the startup script
-COPY start.sh /usr/local/bin/start.sh
-
-# Switch back to root to change permissions
-USER root
+COPY ./dockerfiles/nginx/start.sh /dockerfiles/nginx/start.sh
 
 # Make the startup script executable
-RUN chmod +x /usr/local/bin/start.sh
-
-# Switch back to myuser
-USER myuser
+RUN chmod +x /dockerfiles/nginx/start.sh
 
 # Install Composer dependencies
 RUN composer install --optimize-autoloader
 
-# Exposing port 9000 to Nginx server
+# Exposing ports for Nginx and PHP-FPM
+EXPOSE 80
 EXPOSE 9000
 
 # Command to start the application
-CMD ["/usr/local/bin/start.sh"]
+CMD ["/dockerfiles/nginx/start.sh"]
