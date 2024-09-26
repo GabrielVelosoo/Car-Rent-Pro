@@ -24,6 +24,9 @@ WORKDIR /var/www
 # Copy the project files to the container
 COPY . /var/www
 
+# Copy custom PHP-FPM configuration (www.conf)
+COPY ./docker/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
+
 # Copy the startup script
 COPY start.sh /usr/local/bin/start.sh
 

@@ -21,4 +21,4 @@ else
 fi
 
 echo "Starting the PHP-FPM..."
-php-fpm
+php-fpm -F
