@@ -1,5 +1,5 @@
 <h1 align="center"> 
-	   CarRentPro-API
+	   Car Rent Pro
 </h1>
 
 ---
@@ -8,7 +8,7 @@
 
 # About the Project
 
-`CarRentPro-API` is a project created for managing vehicle rentals efficiently.
+`Car Rent Pro` is a project created for managing vehicle rentals efficiently.
 
 The challenge for this project was to build a RESTful API to handle the entire vehicle rental process. In this project, we implemented CRUD operations (Create, Read, Update, Delete) for brands, car models, cars, clients and rentals, ensured secure user authentication using [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum) for [JWT](https://jwt.io/introduction)-based authentication, and established a token-based authentication system with token refresh capabilities. The API also manages the rental process, from booking to returning vehicles.
 
@@ -20,13 +20,94 @@ This project demonstrates strong skills in API development, secure data handling
 
 <!-- ---------------------------------------------------------------------- -->
 
-# API Link
+# Webservice Link
 
-The `CarRentPro-API` is available for public access. You can use the following link to interact with the API:
+The `Car Rent Pro` is available for public access. You can use the following link to interact with the API:
 
-#### API base URL: [https://carrentpro-api.onrender.com](https://carrentpro-api.onrender.com)
+#### Car Rent Pro: [https://carrentpro-api.onrender.com](https://carrentpro-api.onrender.com)
 
 **NOTE**: If you want to download the project locally, skip to the [Local Project Download](#local-project-download) section.
+
+<!-- ---------------------------------------------------------------------- -->
+
+# Local Project Download
+
+## Prerequisites
+
+Before you begin, you will need to have the following tools installed on your machine:<br>
+• [Git](https://git-scm.com/downloads)<br>
+• [Docker](https://www.docker.com/products/docker-desktop) and [Docker Compose](https://docs.docker.com/compose/install/)<br>
+
+Additionally, it is recommended to have an editor for working with the code, such as [Visual Studio Code](https://code.visualstudio.com/).
+
+Ensure that Docker and Docker Compose are working correctly to set up and run the project environment. There is no need to install PHP or MySQL separately, as they are configured automatically within the Docker containers.
+
+---
+
+<!-- ---------------------------------------------------------------------- -->
+
+## Setting Up the Environment
+
+### 1. Download the Project
+
+   Clone the project repository to your local machine:
+   
+   ```
+   git clone https://github.com/GabrielVelosoo/CarRentPro-API
+   ```
+   
+   Navigate to the project directory:
+   
+   ```
+   cd CarRentPro-API
+   ```
+
+### 2. Configure the Application
+
+   Inside the application container, copy the `.env.example` file to `.env`:
+   
+   ```
+   cp .env.example .env
+   ```
+
+   Configure the database variables in the `.env` file:
+   
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=mysql
+   DB_PORT=3306
+   DB_DATABASE=car_rent_pro
+   DB_USERNAME=user
+   DB_PASSWORD=password
+   ```
+   
+### 3. Configure and Run Docker
+
+   **NOTE**: Ensure that Docker and Docker Compose are installed and working correctly.
+   
+   • **Start the Containers**
+
+   Run the following command to build the images and start the containers:
+   
+   ```
+   docker-compose up -d
+   ```
+
+   • **Stop the Containers**
+
+   When not in use, stop the containers with:
+
+   ```
+   docker-compose down
+   ```
+   
+### 4. Access the Project
+
+   After setup, the API will be available at `http://localhost` (or the port you configured in docker-compose.yml).
+
+   You can use tools like [Postman](https://www.postman.com/downloads/) or [Insomnia](https://insomnia.rest/download) to test the API endpoints.
+
+---
 
 <!-- ---------------------------------------------------------------------- -->
 
@@ -46,7 +127,7 @@ To access the API endpoints, you will need an authentication token. The API retu
 
 ### 1. Generate Access Token
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/login`
+#### • URL: `/api/login`
 #### • Request Body:
  
 ```json
@@ -76,7 +157,7 @@ To access the API endpoints, you will need an authentication token. The API retu
  
 ### 2. Retrieve Logged-In User
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/me`
+#### • URL: `/api/me`
 #### • Headers:
 
 ```
@@ -100,7 +181,7 @@ Authorization: Bearer {your-token}
      
 ### 3. Logout
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/logout`
+#### • URL: `/api/logout`
 #### • Headers:
 
 ```
@@ -117,7 +198,7 @@ Authorization: Bearer {your-token}
 
 ### 4. Refresh JWT
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/refresh`
+#### • URL: `/api/refresh`
 #### • Headers:
 
 ```
@@ -163,7 +244,7 @@ The API offers several endpoints for managing vehicle rentals. Below are details
 
 ### 1. Create a New Brand
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand`
+#### • URL: `/api/brand`
 #### • Request Body (form-data):
    
 ```
@@ -188,7 +269,7 @@ image    (file)     <brand-image(.png)>
      
 ### 2. Retrieve All Brands
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand`
+#### • URL: `/api/brand`
 #### • Success Response(200):
    
 ```
@@ -201,7 +282,7 @@ image    (file)     <brand-image(.png)>
         "updated_at": "0000-00-00T00:00:00.000000Z",
         "car_models": [
             {
-                Brand related models
+                Car model(s) related brand
             }
         ]
     }
@@ -210,7 +291,7 @@ image    (file)     <brand-image(.png)>
      
 ### 3. Retrieve a Single Brand
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand/{id}`
+#### • URL: `/api/brand/{id}`
 #### • Parameters: Brand ID
 #### • Success Response(200):
    
@@ -223,7 +304,7 @@ image    (file)     <brand-image(.png)>
     "updated_at": "0000-00-00T00:00:00.000000Z",
     "car_models": [
         {
-            Brand related models
+            Car model(s) related brand
         }
     ]
 }
@@ -236,7 +317,7 @@ image    (file)     <brand-image(.png)>
 To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
 
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand/{id}`
+#### • URL: `/api/brand/{id}`
 #### • Parameters: Brand ID
 #### • Request Body (form-data):
    
@@ -266,7 +347,7 @@ _method    (text)     <PUT>
 To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
 
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand/{id}`
+#### • URL: `/api/brand/{id}`
 #### • Parameters: Brand ID
 ####• Request Body (form-data):
    
@@ -290,7 +371,7 @@ _method    (text)     <PATCH>
      
 ### 6. Delete a Brand
 #### • Method: `DELETE`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand/{id}`
+#### • URL: `/api/brand/{id}`
 #### • Parameters: Brand ID
 #### • Success Response(200):
     
@@ -304,7 +385,7 @@ _method    (text)     <PATCH>
 
 ### 1. Create a New Car Model
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/car-model`
+#### • URL: `/api/car-model`
 #### • Request Body (form-data):
    
 ```
@@ -339,7 +420,7 @@ abs               (text)        <abs(boolean(0, 1))>
      
 ### 2. Retrieve All Car Models
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/car-model`
+#### • URL: `/api/car-model`
 #### • Success Response(200):
    
 ```
@@ -356,7 +437,7 @@ abs               (text)        <abs(boolean(0, 1))>
         "created_at": "0000-00-00T00:00:00.000000Z",
         "updated_at": "0000-00-00T00:00:00.000000Z",
         "brand": {
-            Brand related to the model
+            Brand related to car model
         }
     }
 ]
@@ -364,7 +445,7 @@ abs               (text)        <abs(boolean(0, 1))>
      
 ### 3. Retrieve a Single Car Model
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/car-model/{id}`
+#### • URL: `/api/car-model/{id}`
 #### • Parameters: Car Model ID
 #### • Success Response(200):
    
@@ -381,7 +462,7 @@ abs               (text)        <abs(boolean(0, 1))>
     "created_at": "0000-00-00T00:00:00.000000Z",
     "updated_at": "0000-00-00T00:00:00.000000Z",
     "brand": {
-        Brand related to the model
+        Brand related to car model
     }
 }
 ```
@@ -393,7 +474,7 @@ abs               (text)        <abs(boolean(0, 1))>
 To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
 
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/car-model/{id}`
+#### • URL: `/api/car-model/{id}`
 #### • Parameters: Car Model ID
 #### • Request Body (form-data):
    
@@ -433,7 +514,7 @@ _method           (text)        <PUT>
 To perform updates on records that require a file and are of type form-data, the update must be made using the `POST` method. It is necessary to pass the parameter `_method` in the request body with the value `PUT` or `PATCH`.
 
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/car-model/{id}`
+#### • URL: `/api/car-model/{id}`
 #### • Parameters: Car Model ID
 #### • Request Body (form-data):
    
@@ -462,7 +543,7 @@ _method  (text)     <PATCH>
      
 ### 6. Delete a Car Model
 #### • Method: `DELETE`
-#### • URL: `https://carrentpro-api.onrender.com/api/car-model/{id}`
+#### • URL: `/api/car-model/{id}`
 #### • Parameters: Car Model ID
 #### • Success Response(200):
  
@@ -476,7 +557,7 @@ _method  (text)     <PATCH>
 
 ### 1. Create a New Car
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/car`
+#### • URL: `/api/car`
 #### • Request Body:
    
 ```
@@ -504,7 +585,7 @@ _method  (text)     <PATCH>
      
 ### 2. Retrieve All Cars
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/car`
+#### • URL: `/api/car`
 #### • Success Response(200):
    
 ```
@@ -526,7 +607,7 @@ _method  (text)     <PATCH>
      
 ### 3. Retrieve a Single Car
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/car/{id}`
+#### • URL: `/api/car/{id}`
 #### • Parameters: Car ID
 #### • Success Response(200):
    
@@ -547,7 +628,7 @@ _method  (text)     <PATCH>
      
 ### 4. Update a Car
 #### • Method: `PUT`
-#### • URL: `https://carrentpro-api.onrender.com/api/car/{id}`
+#### • URL: `/api/car/{id}`
 #### • Parameters: Car ID
 #### • Request Body:
    
@@ -576,7 +657,7 @@ _method  (text)     <PATCH>
 
 ### 5. Partially Update a Car
 #### • Method: `PATCH`
-#### • URL: `https://carrentpro-api.onrender.com/api/car/{id}`
+#### • URL: `/api/car/{id}`
 #### • Parameters: Car ID
 #### • Request Body:
    
@@ -602,7 +683,7 @@ _method  (text)     <PATCH>
      
 ### 6. Delete a Car
 #### • Method: `DELETE`
-#### • URL: `https://carrentpro-api.onrender.com/api/car/{id}`
+#### • URL: `/api/car/{id}`
 #### • Parameters: Car Model ID
 #### • Success Response(200):
     
@@ -616,7 +697,7 @@ _method  (text)     <PATCH>
 
 ### 1. Create a New Client
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/client`
+#### • URL: `/api/client`
 #### • Request Body:
    
 ```
@@ -638,7 +719,7 @@ _method  (text)     <PATCH>
      
 ### 2. Retrieve All Clients
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/client`
+#### • URL: `/api/client`
 #### • Success Response(200):
    
 ```
@@ -654,7 +735,7 @@ _method  (text)     <PATCH>
      
 ### 3. Retrieve a Single Client
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/client/{id}`
+#### • URL: `/api/client/{id}`
 #### • Parameters: Client ID
 #### • Success Response(200):
    
@@ -669,7 +750,7 @@ _method  (text)     <PATCH>
      
 ### 4. Update a Client
 #### • Method: `PUT`
-#### • URL: `https://carrentpro-api.onrender.com/api/client/{id}`
+#### • URL: `/api/client/{id}`
 #### • Parameters: Client ID
 #### • Request Body:
    
@@ -692,7 +773,7 @@ _method  (text)     <PATCH>
 
 ### 5. Partially Update a Client
 #### • Method: `PATCH`
-#### • URL: `https://carrentpro-api.onrender.com/api/client/{id}`
+#### • URL: `/api/client/{id}`
 #### • Parameters: Client ID
 #### • Request Body:
    
@@ -715,7 +796,7 @@ _method  (text)     <PATCH>
      
 ### 6. Delete a Client
 #### • Method: `DELETE`
-#### • URL: `https://carrentpro-api.onrender.com/api/client/{id}`
+#### • URL: `/api/client/{id}`
 #### • Parameters: Client ID
 #### • Success Response(200):
     
@@ -729,7 +810,7 @@ _method  (text)     <PATCH>
 
 ### 1. Create a New Rental
 #### • Method: `POST`
-#### • URL: `https://carrentpro-api.onrender.com/api/rental`
+#### • URL: `/api/rental`
 #### • Request Body:
    
 ```
@@ -765,7 +846,7 @@ _method  (text)     <PATCH>
      
 ### 2. Retrieve All Rentals
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/rental`
+#### • URL: `/api/rental`
 #### • Success Response(200):
    
 ```
@@ -794,7 +875,7 @@ _method  (text)     <PATCH>
      
 ### 3. Retrieve a Single Rental
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/rental/{id}`
+#### • URL: `/api/rental/{id}`
 #### • Parameters: Rental ID
 #### • Success Response(200):
    
@@ -822,7 +903,7 @@ _method  (text)     <PATCH>
      
 ### 4. Update a Rental
 #### • Method: `PUT`
-#### • URL: `https://carrentpro-api.onrender.com/api/rental/{id}`
+#### • URL: `/api/rental/{id}`
 #### • Parameters: Rental ID
 #### • Request Body:
    
@@ -859,7 +940,7 @@ _method  (text)     <PATCH>
 
 ### 5. Partially Update a Rental
 #### • Method: `PATCH`
-#### • URL: `https://carrentpro-api.onrender.com/api/rental/{id}`
+#### • URL: `/api/rental/{id}`
 #### • Parameters: Rental ID
 #### • Request Body:
    
@@ -891,7 +972,7 @@ _method  (text)     <PATCH>
 
 ### 6. Delete a Rental
 #### • Method: `DELETE`
-#### • URL: `https://carrentpro-api.onrender.com/api/rental/{id}`
+#### • URL: `/api/rental/{id}`
 #### • Parameters: Rental ID
 #### • Success Response(200):
     
@@ -936,7 +1017,7 @@ API endpoints allow dynamic customization of the response by providing the optio
 To choose which attributes are returned in the response, you can pass the `attributes` parameter in the query string. This parameter should contain a comma-separated list of the desired attributes. For example:
 
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand?attributes=id,name`
+#### • URL: `/api/brand?attributes=id,name`
 #### • Success Response(200):
 
 ```
@@ -958,7 +1039,7 @@ This will return only the id and name attributes of each brand.
 To filter the results based on certain criteria, you can use the `filter` parameter in the query string. The filter should be formatted as filter=`column:comparator:value`. For example:
 
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand?filter=id:=:6`
+#### • URL: `/api/brand?filter=id:=:6`
 #### • Success Response(200):
 
 ```
@@ -981,14 +1062,14 @@ This will return only brands that match the filter criteria (e.g. brand with id 
 #### You can also combine multiple filter conditions using a semicolon `;`. For example:
 
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand?filter=name:like:%o%;id:=:1`
+#### • URL: `/api/brand?filter=name:like:%o%;id:=:1`
 
 ### Including Related Records
 
 You can also include related records, such as car models, in the response by using the `attributes_car_models` parameter. For example:
 
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand?attributes_car_models=name,image,places`
+#### • URL: `/api/brand?attributes_car_models=name,image,places`
 #### • Success Response(200):
 
 ```
@@ -1019,7 +1100,7 @@ This will include related car models with only the name, image and places attrib
 You can combine these parameters in a single request for more specific results. Parameters should be separated by an ampersand `&` as `par1&par2&par3`. For example:
 
 #### • Method: `GET`
-#### • URL: `https://carrentpro-api.onrender.com/api/brand?attributes=id,name&attributes_car_models=name,places&filter=name:like:bm%`
+#### • URL: `/api/brand?attributes=id,name&attributes_car_models=name,places&filter=name:like:bm%`
 #### • Success Response(200):
 
 ```
@@ -1080,145 +1161,6 @@ You can customize the response for different endpoints using the following param
     • **attributes_client**: Includes attributes of the related client.<br>
     • **attributes_car**: Includes attributes of the related car.<br>
     • **filter**: Applies filters to the results.
-
----
-
-<!-- ---------------------------------------------------------------------- -->
-
-# Local Project Download
-
-## Prerequisites
-
-Before you begin, you will need to have the following tools installed on your machine:<br>
-• [Git](https://git-scm.com/downloads)<br>
-• [Docker](https://www.docker.com/products/docker-desktop) and [Docker Compose](https://docs.docker.com/compose/install/)<br>
-
-Additionally, it is recommended to have an editor for working with the code, such as [Visual Studio Code](https://code.visualstudio.com/).
-
-Ensure that Docker and Docker Compose are working correctly to set up and run the project environment. There is no need to install PHP or MySQL separately, as they are configured automatically within the Docker containers.
-
----
-
-<!-- ---------------------------------------------------------------------- -->
-
-## Setting Up the Environment
-
-### 1. Download the Project
-
-   Clone the project repository to your local machine:
-   
-   ```
-   git clone https://github.com/GabrielVelosoo/CarRentPro-API
-   ```
-   
-   Navigate to the project directory:
-   
-   ```
-   cd CarRentPro-API
-   ```
-   
-### 2. Configure and Run Docker
-
-   **NOTE**: Ensure that Docker and Docker Compose are installed and working correctly.
-   
-   • **Start the Containers**
-
-   Run the following command to build the images and start the containers:
-   
-   ```
-   docker-compose up -d
-   ```
-
-   • **Stop the Containers**
-
-   When not in use, stop the containers with:
-
-   ```
-   docker-compose down
-   ```
-
-   • **Install PHP Dependencies**
-
-   Use the command `docker ps` to list the containers, you should see something like this:
-   
-   ```
-   CONTAINER ID     IMAGE                   COMMAND                  CREATED          STATUS          PORTS                   NAMES
-   <container-id>   carrentpro-api-app      "docker-php-entrypoi…"   30 minutes ago   Up 30 minutes   0.0.0.0:8000->80/tcp    <container-name>
-   ```
-
-   Enter the application container and install the Composer dependencies:
-   
-   ```
-   docker exec -it <container-name-or-id> bash
-   ```
-   ```
-   composer install
-   ```
-
-### 3. Configure the Application
-
-   Inside the application container, copy the `.env.example` file to `.env`:
-   
-   ```
-   cp .env.example .env
-   ```
-
-   Configure the database variables in the `.env` file:
-   
-   ```
-   DB_CONNECTION=
-   DB_HOST=
-   DB_PORT=
-   DB_DATABASE=
-   DB_USERNAME=
-   DB_PASSWORD=
-   ```
-   
-   • **Generate the Application Key**
-
-   Generate the Laravel application key:
-   
-   ```
-   php artisan key:generate
-   ```
-   
-   • **Run Migrations**
-
-   Run the migrations to set up the database:
-
-   ```
-   php artisan migrate
-   ```
-
-   • **Run the Seeder**
-
-   Run the seeder to create a user in the users table:
-
-   ```
-   php artisan db:seed
-   ```
-
-### 4. Setting Up File Storage
-
-   To properly handle file uploads and ensure that they are accessible, you'll need to create a symbolic link from the public/storage directory to the storage/app/public directory.        This is important because it allows uploaded files to be publicly accessible from the web.
-
-   To do this, run the following command inside the application container:
-   
-   ```
-   php artisan storage:link
-   ```
-
-   • **Why is this necessary?**
-
-   Laravel uses the storage folder to store uploaded files. The php artisan storage:link command creates a symbolic link that connects the public/storage folder to the actual storage      location, allowing the files to be accessible via a public URL.
-
-   Without this step, any file uploads will be saved, but they won’t be accessible from the application’s public directory.
-   
-### 5. Access the Project
-
-   After setup, the API will be available at `http://localhost:8000` (or the port you configured in docker-compose.yml).
-
-   You can use tools like [Postman](https://www.postman.com/downloads/) or [Insomnia](https://insomnia.rest/download) to test the API endpoints.
 
 ---
 
