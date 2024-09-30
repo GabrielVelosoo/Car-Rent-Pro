@@ -53,7 +53,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    Clone the project repository to your local machine:
    
    ```
-   git clone https://github.com/GabrielVelosoo/CarRentPro-API
+   git clone https://github.com/GabrielVelosoo/Car-Rent-Pro
    ```
    
    Navigate to the project directory:
