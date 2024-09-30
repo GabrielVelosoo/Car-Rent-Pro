@@ -59,7 +59,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
    Navigate to the project directory:
    
    ```
-   cd CarRentPro-API
+   cd Car-Rent-Pro
    ```
 
 ### 2. Configure the Application
