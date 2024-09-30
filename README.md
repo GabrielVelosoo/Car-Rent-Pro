@@ -12,7 +12,7 @@
 
 The challenge for this project was to build a RESTful API to handle the entire vehicle rental process. In this project, we implemented CRUD operations (Create, Read, Update, Delete) for brands, car models, cars, clients and rentals, ensured secure user authentication using [Laravel Sanctum](https://laravel.com/docs/11.x/sanctum) for [JWT](https://jwt.io/introduction)-based authentication, and established a token-based authentication system with token refresh capabilities. The API also manages the rental process, from booking to returning vehicles.
 
-The API was developed using [Laravel](https://laravel.com/), [Docker](https://www.docker.com/), and [PostgreSQL](https://www.postgresql.org/), featuring endpoints to create, retrieve, update, and delete vehicle records, as well as manage rentals. A key feature of the API is the ability to filter responses and select specific attributes of the data returned, giving users flexibility to retrieve only the information they need, such as related car models and brand attributes.
+The API was developed using [Laravel](https://laravel.com/), [Docker](https://www.docker.com/), and [MySQL](https://www.mysql.com/), featuring endpoints to create, retrieve, update, and delete vehicle records, as well as manage rentals. A key feature of the API is the ability to filter responses and select specific attributes of the data returned, giving users flexibility to retrieve only the information they need, such as related car models and brand attributes.
 
 This project demonstrates strong skills in API development, secure data handling, and best programming practices, providing a robust solution for vehicle rental management.
 
@@ -22,7 +22,7 @@ This project demonstrates strong skills in API development, secure data handling
 
 # Webservice Link
 
-The `Car Rent Pro` is available for public access. You can use the following link to interact with the API:
+The `Car Rent Pro` is available for public access, publicly the API allows access only to the lists of brands, car models, and cars. You can use the following link to interact with the API:
 
 #### Car Rent Pro: [https://carrentpro-api.onrender.com](https://carrentpro-api.onrender.com)
 
@@ -64,7 +64,7 @@ Ensure that Docker and Docker Compose are working correctly to set up and run th
 
 ### 2. Configure the Application
 
-   Inside the application container, copy the `.env.example` file to `.env`:
+   Copy the `.env.example` file to `.env`:
    
    ```
    cp .env.example .env
@@ -1191,7 +1191,8 @@ The following tools were used in the construction of the project:
 
 #### **Database**
 
-• **[PostgreSQL]([https://www.mysql.com/](https://www.postgresql.org/))** - Database management system.
+• **[PostgreSQL](https://www.postgresql.org/)** - Database management system.<br>
+• **[MySQL](https://www.mysql.com/)** - Database management system.
 
 #### **Containerization** ([Docker](https://www.docker.com/))
 
